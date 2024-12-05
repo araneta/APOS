@@ -8,16 +8,26 @@ package com.example.pos.controllers;
  *
  * @author aldo
  */
+import com.example.pos.dto.JwtResponse;
+import com.example.pos.dto.LoginRequest;
 import com.example.pos.entities.User;
 import com.example.pos.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    
     @Autowired
     private AuthService authService;
 
@@ -28,44 +38,25 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequest request) {
-        User user = authService.login(request.getUsername(), request.getPassword());
-        return ResponseEntity.ok(user);
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            // Authenticate the user
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            );
+
+            // Generate JWT token
+            String token = jwtTokenUtil.generateToken(authentication.getName());
+
+            // Return token
+            return ResponseEntity.ok(new JwtResponse(token));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(401).body("Invalid username or password");
+        }
     }
 
-    static class LoginRequest {
-
-        /**
-         * @return the username
-         */
-        public String getUsername() {
-            return username;
-        }
-
-        /**
-         * @param username the username to set
-         */
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        /**
-         * @return the password
-         */
-        public String getPassword() {
-            return password;
-        }
-
-        /**
-         * @param password the password to set
-         */
-        public void setPassword(String password) {
-            this.password = password;
-        }
-        private String username;
-        private String password;
-        // Getters and Setters
-    }
+     
 
     
 }
