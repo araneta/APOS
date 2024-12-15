@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,22 @@ export class LoginComponent {
     password: new FormControl(''),
   });
 
-  onSubmit(){
-    console.log('form', this.loginForm.value);
+  constructor(public authService: AuthService){
+
   }
+
+  
+
+  onSubmit(){
+      console.log('form', this.loginForm.value);
+      if(this.loginForm.invalid){
+        return;
+      }
+      // Use non-null assertion (!) or default values to ensure types are `string`.
+      const username = this.loginForm.value.username || '';
+      const password = this.loginForm.value.password || '';
+      
+      this.authService.login(username, password);
+    }
+    
 }

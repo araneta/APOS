@@ -10,6 +10,7 @@ package com.example.pos.controllers;
  */
 import com.example.pos.dto.JwtResponse;
 import com.example.pos.dto.LoginRequest;
+import com.example.pos.dto.SecurityUser;
 import com.example.pos.entities.User;
 import com.example.pos.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,7 +48,10 @@ public class AuthController {
             );
 
             // Generate JWT token
-            String token = jwtTokenUtil.generateToken(authentication.getName());
+            SecurityUser userDetails = (SecurityUser)authentication.getPrincipal();
+            //userDetails.
+
+            String token = jwtTokenUtil.generateToken(userDetails.getUserID(), userDetails.getUsername());
 
             // Return token
             return ResponseEntity.ok(new JwtResponse(token));

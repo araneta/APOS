@@ -7,6 +7,8 @@ package com.example.pos.controllers;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,9 +21,14 @@ public class JwtTokenUtil {
     private static final String SECRET_KEY = "6964ac80cb382b712e01aa1a2a40d9f88d9db0df580ed3c583e01d6f92da123a"; // Use a secure key
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
 
-    public String generateToken(String username) {
+    public String generateToken(Long id, String username) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("userid", id);
+        payload.put("username", username);
+        
         return Jwts.builder()
                 .setSubject(username)
+                .setClaims(payload)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)

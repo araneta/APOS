@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {FormGroup, FormControl} from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import {AuthService} from '../auth.service';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -22,7 +22,7 @@ export class HomeComponent {
     lastName: new FormControl('tres'),
   });
 
-  constructor(private authSvc: AuthService){
+  constructor(){
 
   }
   onSubmit(){
@@ -31,7 +31,5 @@ export class HomeComponent {
 
   onSubmitTelo(){
     console.log('das',this.teloForm.value);
-    var s = this.authSvc.addData("dasdsad");
-    console.log(s);
   }
 }
