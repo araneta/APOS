@@ -8,6 +8,7 @@ package com.example.pos.services;
  *
  * @author aldo
  */
+import com.example.pos.dto.SignUpResponse;
 import com.example.pos.entities.User;
 import com.example.pos.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,13 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String signup(User user) {
+    public User signup(User user) {
         if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new RuntimeException("Username already exists!");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return "User registered successfully!";
+        return user;
     }
 
     public User login(String username, String password) {

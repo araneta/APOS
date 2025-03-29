@@ -1,0 +1,24 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Welcome, {{ username }}!</h1>
+    <button class="logout-btn" (click)="onLogout()">Logout</button>
+  </header>
+
+  <main class="dashboard-content">
+    <div class="dashboard-card">
+      <h2>Profile Overview</h2>
+      <div class="profile-info">
+        <p><strong>Username:</strong> {{ username }}</p>
+        <p><strong>Status:</strong> Active</p>
+      </div>
+    </div>
+
+    <div class="dashboard-card">
+      <h2>Quick Actions</h2>
+      <div class="action-buttons">
+        <button class="action-btn">Edit Profile</button>
+        <button class="action-btn">Change Password</button>
+      </div>
+    </div>
+  </main>
+</div> 
