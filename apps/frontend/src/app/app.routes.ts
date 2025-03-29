@@ -4,6 +4,7 @@ import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProfileComponent } from './profile/profile.component';
 import { AuthService } from './services/auth.service';
 import { inject } from '@angular/core';
 
@@ -15,6 +16,17 @@ export const routes: Routes = [
     { 
         path: 'dashboard', 
         component: DashboardComponent,
+        canActivate: [() => {
+            const authService = inject(AuthService);
+            if (!authService.isAuthenticated()) {
+                return false;
+            }
+            return true;
+        }]
+    },
+    {
+        path: 'profile',
+        component: ProfileComponent,
         canActivate: [() => {
             const authService = inject(AuthService);
             if (!authService.isAuthenticated()) {
