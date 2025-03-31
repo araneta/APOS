@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,6 +21,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private toastr: ToastrService
   ) {}
 
@@ -37,15 +39,33 @@ export class ProfileComponent implements OnInit {
         this.toastr.error('Error loading profile data');
       }
     }
+
+    this.userService.getProfile().subscribe((data) => {
+      this.profileForm.patchValue(data);
+    });
   }
 
   onSubmit() {
     if (this.profileForm.valid) {
-      // TODO: Implement profile update logic
-      console.log('Profile update:', this.profileForm.value);
-      this.toastr.success('Profile updated successfully');
-    } else {
-      this.toastr.error('Please fill in all required fields');
+      const formValue = this.profileForm.value;
+      const profileData = {
+        username: formValue.username || '',
+        firstName: formValue.firstName || '',
+        lastName: formValue.lastName || ''
+      };
+      
+      this.userService.updateProfile(profileData).subscribe({
+        next: (response) => {
+          if (response.status === 'ok') {
+            this.toastr.success('Account updated successfully!', 'Success');
+          } else {
+            this.toastr.error('Failed to update account', 'Error');
+          }
+        },
+        error: (error: any) => {
+          this.toastr.error(error.message || 'Failed to update account', 'Error');
+        }
+      });
     }
   }
 } 

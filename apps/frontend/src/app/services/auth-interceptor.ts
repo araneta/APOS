@@ -1,23 +1,18 @@
-import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 
-@Injectable()
-export class AuthInterceptorService implements HttpInterceptor {
-  private apiUrl = environment.apiUrl;
+export const AuthInterceptorService: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const token = authService.getToken();
+  const apiUrl = environment.apiUrl;
 
-  constructor(private authService: AuthService) {}
+  // Automatically attach API URL and JWT token
+  const modifiedReq = req.clone({
+    url: `${apiUrl}${req.url}`,
+    setHeaders: token ? { Authorization: `Bearer ${token}` } : {},
+  });
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const token = this.authService.getToken();
-
-    // Automatically attach API URL and JWT token
-    const modifiedReq = req.clone({
-      url: `${this.apiUrl}${req.url}`,
-      setHeaders: token ? { Authorization: `Bearer ${token}` } : {},
-    });
-
-    return next.handle(modifiedReq);
-  }
-}
+  return next(modifiedReq);
+};
