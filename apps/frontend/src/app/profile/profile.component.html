@@ -9,17 +9,22 @@
           <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
             <div class="mb-3">
               <label for="username" class="form-label">Username</label>
-              <input type="text" class="form-control" id="username" formControlName="username" readonly>
+              <input type="text" class="form-control" id="username" formControlName="username" required="required" readonly>
             </div>
 
             <div class="mb-3">
-              <label for="firstName" class="form-label">First Name</label>
-              <input type="text" class="form-control" id="firstName" formControlName="firstName">
+              <label for="firstName" class="form-label">First Name *</label>
+              <input type="text" class="form-control" id="firstName" formControlName="firstName" required="required" >
             </div>
 
             <div class="mb-3">
-              <label for="lastName" class="form-label">Last Name</label>
-              <input type="text" class="form-control" id="lastName" formControlName="lastName">
+              <label for="lastName" class="form-label">Last Name *</label>
+              <input type="text" class="form-control" id="lastName" formControlName="lastName" required="required" >
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password *</label>
+              <input type="text" class="form-control" id="password" formControlName="password" required="required" >
             </div>
 
             <div class="d-grid gap-2">

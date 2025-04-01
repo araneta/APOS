@@ -7,6 +7,24 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 
+interface SignUpResponse {
+    status: string;
+    message: string;
+    data: {
+        id: number;
+        username: string;
+        password: string;
+        role: string;
+        firstName: string | null;
+        lastName: string | null;
+    };
+}
+
+interface SignupRequest {
+    username: string;
+    password: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     private tokenKey = 'access_token';
@@ -58,11 +76,15 @@ export class AuthService {
         return token ? !this.jwtHelper.isTokenExpired(token) : false;
     }
 
-    signup(email: string, password: string): Observable<any> {
-        const authData = { username: email, password: password };
-        return this.http.post<{ token: string }>(`${this.apiUrl}/signup`, authData).pipe(
+    signup(email: string, password: string): Observable<SignUpResponse> {
+        const authData: SignupRequest = { username: email, password: password };
+        return this.http.post<SignUpResponse>(`${this.apiUrl}/signup`, authData).pipe(
             tap(response => {
-                this.toastr.success('Account created successfully!', 'Success');
+                if (response.status === 'ok') {
+                    this.toastr.success(response.message, 'Success');
+                } else {
+                    this.toastr.error('Failed to create account', 'Error');
+                }
             }),
             catchError(this.handleError.bind(this))
         );

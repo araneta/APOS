@@ -47,6 +47,8 @@ export class SignupComponent implements OnInit {
       next: (response) => {
         if (response.status === 'ok') {
           this.toastr.success('Account created successfully!', 'Success');
+
+          this.router.navigate(['/login']);
         } else {
           this.toastr.error('Failed to create account', 'Error');
         }

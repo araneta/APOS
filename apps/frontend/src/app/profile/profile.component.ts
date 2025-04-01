@@ -16,7 +16,8 @@ export class ProfileComponent implements OnInit {
   profileForm = new FormGroup({
     username: new FormControl(''),
     firstName: new FormControl(''),
-    lastName: new FormControl('')
+    lastName: new FormControl(''),
+    password: new FormControl('')
   });
 
   constructor(
@@ -51,7 +52,8 @@ export class ProfileComponent implements OnInit {
       const profileData = {
         username: formValue.username || '',
         firstName: formValue.firstName || '',
-        lastName: formValue.lastName || ''
+        lastName: formValue.lastName || '',
+        password: formValue.password || '',
       };
       
       this.userService.updateProfile(profileData).subscribe({
