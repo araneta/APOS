@@ -7,6 +7,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthService } from './services/auth.service';
 import { inject } from '@angular/core';
+import { OfficeConfigComponent } from './office-config/office-config.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -31,6 +32,17 @@ export const routes: Routes = [
             const authService = inject(AuthService);
             if (!authService.isAuthenticated()) {
                 return false;
+            }
+            return true;
+        }]
+    },
+    {
+        path: 'office-config',
+        component: OfficeConfigComponent,
+        canActivate: [() => {
+            const authService = inject(AuthService);
+            if (!authService.isAuthenticated()) {
+                return false;   
             }
             return true;
         }]

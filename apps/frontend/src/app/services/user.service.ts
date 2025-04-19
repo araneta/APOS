@@ -41,7 +41,7 @@ export class UserService {
     return this.http.put<ApiResponse<UserProfile>>(`${this.apiUrl}/profile`, profile).pipe(
       tap((response) => {
         if (response.status === 'ok') {
-          this.toastr.success(response.message, 'Success');
+          //this.toastr.success(response.message, 'Success');
         }
       }),
       catchError(this.handleError.bind(this))

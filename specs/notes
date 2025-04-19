@@ -1,2 +1,5 @@
 curl -X POST http://localhost:8888/api/auth/signup -H "Content-Type: application/json" -d '{ "username": "testuser", "password": "testpassword"}'
 curl -X POST http://localhost:8888/api/auth/login -H "Content-Type: application/json" -d '{ "username": "testuser", "password": "testpassword"}'
+
+export JAVA_HOME=/media/araneta/49909430-d2bd-4bcf-be1d-3c425a4013bf/apps/jdk-17.0.11
+./run.sh 

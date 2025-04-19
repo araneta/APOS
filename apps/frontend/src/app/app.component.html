@@ -15,6 +15,7 @@
         <ng-container *ngIf="authService.isAuthenticated()">
           <li class="nav-item"><a href="/dashboard" class="nav-link">Dashboard</a></li>
           <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>
+          <li class="nav-item"><a href="/office-config" class="nav-link">Office Config</a></li>
           <li class="nav-item"><a href="#" class="nav-link" (click)="authService.logout(); $event.preventDefault()">Logout</a></li>
         </ng-container>
         <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
