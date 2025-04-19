@@ -8,9 +8,9 @@ export interface OfficeConfig {
   headOfficeCode: string;
   officeName: string;
   timezone: string;
-  startMonth: string;
+  startMonth: number;
   startYear: number;
-  endMonth: string;
+  endMonth: number;
 }
 
 @Injectable({
@@ -21,23 +21,12 @@ export class OfficeConfigService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<OfficeConfig[]> {
-    return this.http.get<OfficeConfig[]>(this.apiUrl);
+  get(): Observable<OfficeConfig> {
+    return this.http.get<OfficeConfig>(`${this.apiUrl}`);
   }
 
-  getById(id: number): Observable<OfficeConfig> {
-    return this.http.get<OfficeConfig>(`${this.apiUrl}/${id}`);
-  }
-
-  create(config: OfficeConfig): Observable<OfficeConfig> {
+  save(config: OfficeConfig): Observable<OfficeConfig> {
     return this.http.post<OfficeConfig>(this.apiUrl, config);
   }
 
-  update(id: number, config: OfficeConfig): Observable<OfficeConfig> {
-    return this.http.put<OfficeConfig>(`${this.apiUrl}/${id}`, config);
-  }
-
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
 }

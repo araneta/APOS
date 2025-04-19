@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { OfficeConfigService, OfficeConfig } from '../services/office-config.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-office-config',
@@ -14,21 +16,37 @@ export class OfficeConfigComponent implements OnInit {
     headOfficeCode: '',
     officeName: '',
     timezone: 'Asia/Jakarta',
-    startMonth: 'April',
+    startMonth: 1,
     startYear: new Date().getFullYear(),
-    endMonth: 'Desember'
+    endMonth: 12
   };
 
-  constructor(private service: OfficeConfigService) {}
+  constructor(
+    private authService: AuthService,
+    private service: OfficeConfigService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
-    // Get user data from token
-    const token = this.service.get();
+    const token = this.authService.getToken();
     if (token) {
       try {
         const tokenData = JSON.parse(atob(token.split('.')[1]));
-        this.profileForm.patchValue({
-          username: tokenData.username || ''
+        const username = tokenData.username || '';
+        console.log('username',username);
+        this.service.get().subscribe((data) => {
+          if(data==null){
+            this.config = {
+              headOfficeCode: '',
+              officeName: '',
+              timezone: 'Asia/Jakarta',
+              startMonth: 1,
+              startYear: new Date().getFullYear(),
+              endMonth: 12
+            };          
+          } else {
+            this.config = data;
+          }
         });
       } catch (error) {
         console.error('Error parsing token:', error);
@@ -36,14 +54,15 @@ export class OfficeConfigComponent implements OnInit {
       }
     }
 
-    this.userService.getProfile().subscribe((data) => {
-      this.profileForm.patchValue(data);
-    });
   }
 
   save(): void {
-    this.service.create(this.config).subscribe({
-      next: res => alert('Config saved!'),
+    console.log('config',this.config);
+    this.service.save(this.config).subscribe({
+      next: res => {
+        alert('Config saved!, Logging out...');
+        this.authService.logout();
+      },
       error: err => console.error(err)
     });
   }

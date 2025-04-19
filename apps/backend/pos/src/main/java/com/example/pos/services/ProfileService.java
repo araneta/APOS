@@ -29,7 +29,10 @@ public class ProfileService {
         //}
         user.setFirstName(profile.getFirstName());
         user.setLastName(profile.getLastName());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(!user.getPassword().isBlank()){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        
         userRepository.save(user);
     }
 

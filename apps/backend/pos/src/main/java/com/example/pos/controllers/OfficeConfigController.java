@@ -34,48 +34,12 @@ public class OfficeConfigController {
     }
 
     @GetMapping
-    public List<OfficeConfig> getAllConfigs() {
-        return officeConfigService.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<OfficeConfig> getConfigById(@PathVariable Long id) {
-        return officeConfigService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/kode/{code}")
-    public ResponseEntity<OfficeConfig> getByHeadOfficeCode(@PathVariable String code) {
-        return officeConfigService.findByHeadOfficeCode(code)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public OfficeConfig getConfig() {
+        return officeConfigService.get();
     }
 
     @PostMapping
-    public OfficeConfig createConfig(@RequestBody OfficeConfig config) {
-        return officeConfigService.save(config);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<OfficeConfig> updateConfig(@PathVariable Long id, @RequestBody OfficeConfig updatedConfig) {
-        return officeConfigService.findById(id).map(existing -> {
-            existing.setHeadOfficeCode(updatedConfig.getHeadOfficeCode());
-            existing.setOfficeName(updatedConfig.getOfficeName());
-            existing.setTimezone(updatedConfig.getTimezone());
-            existing.setStartMonth(updatedConfig.getStartMonth());
-            existing.setStartYear(updatedConfig.getStartYear());
-            existing.setEndMonth(updatedConfig.getEndMonth());
-            return ResponseEntity.ok(officeConfigService.save(existing));
-        }).orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteConfig(@PathVariable Long id) {
-        if (officeConfigService.findById(id).isPresent()) {
-            officeConfigService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public OfficeConfig saveConfig(@RequestBody OfficeConfig config) {
+        return officeConfigService.saveOrUpdate(config);
     }
 }

@@ -17,9 +17,9 @@ import jakarta.persistence.Id;
 @Entity
 public class OfficeConfig {
     public OfficeConfig() {}
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id    
+    private Long id = 1L; // Always ID 1
+
     
     @Column(name = "head_office_code", nullable = false)
     private String headOfficeCode;
@@ -31,13 +31,13 @@ public class OfficeConfig {
     private String timezone;
 
     @Column(name = "start_month", nullable = false)
-    private String startMonth; // e.g., "April"
+    private Integer startMonth; // e.g., "April"
 
     @Column(name = "start_year", nullable = false)
     private Integer startYear;
 
     @Column(name = "end_month", nullable = false)
-    private String endMonth; // e.g., "Desember"
+    private Integer endMonth; // e.g., "Desember"
 
     /**
      * @return the id
@@ -98,14 +98,14 @@ public class OfficeConfig {
     /**
      * @return the startMonth
      */
-    public String getStartMonth() {
+    public Integer getStartMonth() {
         return startMonth;
     }
 
     /**
      * @param startMonth the startMonth to set
      */
-    public void setStartMonth(String startMonth) {
+    public void setStartMonth(Integer startMonth) {
         this.startMonth = startMonth;
     }
 
@@ -126,14 +126,14 @@ public class OfficeConfig {
     /**
      * @return the endMonth
      */
-    public String getEndMonth() {
+    public Integer getEndMonth() {
         return endMonth;
     }
 
     /**
      * @param endMonth the endMonth to set
      */
-    public void setEndMonth(String endMonth) {
+    public void setEndMonth(Integer endMonth) {
         this.endMonth = endMonth;
     }
 }

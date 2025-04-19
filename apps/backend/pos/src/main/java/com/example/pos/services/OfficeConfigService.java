@@ -24,23 +24,12 @@ public class OfficeConfigService {
         this.officeConfigRepository = officeConfigRepository;
     }
 
-    public OfficeConfig save(OfficeConfig config) {
+   public OfficeConfig get() {
+        return officeConfigRepository.findById(1L).orElse(null);
+    }
+
+    public OfficeConfig saveOrUpdate(OfficeConfig config) {
+        config.setId(1L); // Force ID 1
         return officeConfigRepository.save(config);
-    }
-
-    public List<OfficeConfig> findAll() {
-        return officeConfigRepository.findAll();
-    }
-
-    public Optional<OfficeConfig> findById(Long id) {
-        return officeConfigRepository.findById(id);
-    }
-
-    public Optional<OfficeConfig> findByHeadOfficeCode(String code) {
-        return Optional.ofNullable(officeConfigRepository.findByHeadOfficeCode(code));
-    }
-
-    public void deleteById(Long id) {
-        officeConfigRepository.deleteById(id);
     }
 }

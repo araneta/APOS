@@ -3,3 +3,5 @@ curl -X POST http://localhost:8888/api/auth/login -H "Content-Type: application/
 
 export JAVA_HOME=/media/araneta/49909430-d2bd-4bcf-be1d-3c425a4013bf/apps/jdk-17.0.11
 ./run.sh 
+araneta
+willamette
