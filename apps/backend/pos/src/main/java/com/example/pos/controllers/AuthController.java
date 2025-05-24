@@ -20,10 +20,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -46,8 +50,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
+            logger.info(loginRequest.getUsername());
+            logger.info(loginRequest.getPassword());
             // Authenticate the user
-            Authentication authentication = authenticationManager.authenticate(
+            Authentication authentication = authenticationManager.authenticate(                    
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
             );
 
@@ -63,7 +69,7 @@ public class AuthController {
             e.printStackTrace();
             //return ResponseEntity.status(401).body("Invalid username or password");
             var response = new BaseResponse();
-            response.setMessage("Invalid username or password");
+            response.setMessage("Invalid username or password1");
             //response.setData(createdUser);
             response.setStatus("error");
             return ResponseEntity.status(401).body(response);

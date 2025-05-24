@@ -68,6 +68,8 @@ export class ProfileComponent implements OnInit {
           this.toastr.error(error.message || 'Failed to update account', 'Error');
         }
       });
+    }else{
+      this.toastr.error('Please fill in all required fields', 'Error');
     }
   }
 } 
