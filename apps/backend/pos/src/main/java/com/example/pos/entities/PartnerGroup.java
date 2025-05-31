@@ -11,18 +11,28 @@ package com.example.pos.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
 
-@Embeddable
+@Entity
+@Table(name = "partner_group")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PartnerId implements Serializable {
+@Builder
+public class PartnerGroup {
 
-    @Column(length = 50)
+    @Id
+    @Column(length = 20)
     private String code;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 2)
-    private PartnerType type;
+    @Column(length = 100)
+    private String name;
+
+    @Column(precision = 20, scale = 3)
+    private BigDecimal discount;
+
+    private Integer priceLevel;
+
+    @Column(precision = 20, scale = 3)
+    private BigDecimal pointMultiplier;
 }

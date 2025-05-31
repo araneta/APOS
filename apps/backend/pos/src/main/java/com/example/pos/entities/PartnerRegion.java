@@ -11,18 +11,18 @@ package com.example.pos.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
-
-@Embeddable
+@Entity
+@Table(name = "partner_region")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PartnerId implements Serializable {
+@Builder
+public class PartnerRegion {
 
+    @Id
     @Column(length = 50)
     private String code;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 2)
-    private PartnerType type;
+    @Column(length = 250)
+    private String name;
 }

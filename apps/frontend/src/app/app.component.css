@@ -1,0 +1,58 @@
+/* Sidenav styles */
+.offcanvas-lg {
+  width: 280px;
+  background-color: #f8f9fa;
+}
+
+.nav-link {
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  margin: 0.2rem 0;
+}
+
+.nav-link:hover {
+  background-color: #e9ecef;
+  color: #0d6efd;
+}
+
+.nav-link.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Collapsible submenu styles */
+#productsSubmenu {
+  background-color: #f8f9fa;
+  border-radius: 0.25rem;
+  margin: 0.2rem 0;
+}
+
+#productsSubmenu .nav-link {
+  padding-left: 2rem;
+  font-size: 0.9rem;
+}
+
+/* Toggle button styles */
+.btn-link {
+  color: #333;
+  text-decoration: none;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.btn-link:hover {
+  color: #0d6efd;
+  background-color: #e9ecef;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  .offcanvas-lg {
+    width: 100%;
+  }
+  
+  .col-auto {
+    width: 100%;
+  }
+} 

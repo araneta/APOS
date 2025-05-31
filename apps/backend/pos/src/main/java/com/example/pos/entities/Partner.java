@@ -4,74 +4,132 @@
  */
 package com.example.pos.entities;
 
-/**
- *
- * @author araneta
- */
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "partner")
 @Data
-@IdClass(PartnerId.class)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Partner {
 
-    @Id
-    private String code;
+    @EmbeddedId
+    private PartnerId id;
 
-    @Id
-    private String type;
-
+    @Column(length = 150)
     private String name;
+
+    @Column(columnDefinition = "address")
     private String address;
+
+    @Column(length = 100)
     private String city;
+
+    @Column(length = 100)
     private String province;
+
+    @Column(length = 20)
     private String postalCode;
+
+    @Column(length = 100)
     private String country;
+
+    @Column(length = 200)
     private String phone;
+
+    @Column(length = 200)
     private String fax;
-    private String contactPerson;
+
+    @Column(length = 200)
+    private String contact;
+
+    @Column(length = 200)
     private String email;
 
-    private String currencyCode;
+    @ManyToOne
+    @JoinColumn(name = "currency")
+    private Currency currency;
 
-    private String bankAccountNumber;
-    private String accountHolderName;
-    private String bankName;
-    private String note;
+    @Column(length = 100)
+    private String accountNumber;
 
-    private BigDecimal invoiceAmountLimit;
-    private Integer invoiceDueDaysLimit;
+    @Column(length = 100)
+    private String accountHolder;
+
+    @Column(length = 100)
+    private String bank;
+
+    @Column(columnDefinition = "text")
+    private String notes;
+
+    private BigDecimal creditLimitAmount;
+
+    private Integer creditLimitDays;
+
+    @Column(length = 5)
     private String discountType;
+
+    @Column(name = "group_code", length = 20)
     private String groupCode;
-    private Integer commissionOption;
-    private Integer commissionAmountOption;
+
+    private Integer commissionMode;
+
+    private Integer commissionCalcMethod;
+
     private BigDecimal commissionPercent;
-    private BigDecimal commissionNominal;
 
+    private BigDecimal commissionAmount;
+
+    @Column(length = 100)
     private String taxIdNumber;
-    private Integer paymentDueDay;
 
-    private String regionCode;
-    private String subRegionCode;
+    private Integer invoiceDueDays;
+
+    @ManyToOne
+    @JoinColumn(name = "partner_region")
+    private PartnerRegion region;
+
+    @ManyToOne
+    @JoinColumn(name = "partner_subregion")
+    private PartnerSubregion subregion;
+
+    @Column(length = 50)
     private String salesCode;
 
-    private BigDecimal creditLimit;
+    private BigDecimal maxCreditAmount;
+
+    @Column(length = 10)
     private String taxSystem;
+
+    @Column(length = 10)
     private String optionalTaxSystem;
+
     private BigDecimal taxAmount;
 
-    private String nationalIdNumber;
-    private String taxpayerName;
-    private String taxpayerAddress;
-    private LocalDate birthDate;
-    private String creditOption;
-    private String creditAccountCode;
-    private String isActive;
+    @Column(length = 50)
+    private String nationalId;
 
-    private boolean checkOutstandingBalance;
+    @Column(length = 150)
+    private String taxName;
+
+    @Column(columnDefinition = "text")
+    private String taxAddress;
+
+    private LocalDateTime birthDate;
+
+    @Column(length = 5)
+    private String creditOption;
+
+    @Column(length = 30)
+    private String creditAccount;
+
+    @Column(length = 15)
+    private String status = "Y";
+
+    private boolean checkBeforePaid = false;
 }

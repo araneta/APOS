@@ -1,26 +1,87 @@
 <main>
-  <div class="container">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-        <span class="fs-4">Simple header</span>
-      </a>
-  
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a href="/" class="nav-link" [class.active]="!authService.isAuthenticated()">Home</a></li>
-        <ng-container *ngIf="!authService.isAuthenticated()">
-          <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
-          <li class="nav-item"><a href="/signup" class="nav-link">Signup</a></li>
-        </ng-container>
-        <ng-container *ngIf="authService.isAuthenticated()">
-          <li class="nav-item"><a href="/dashboard" class="nav-link">Dashboard</a></li>
-          <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>
-          <li class="nav-item"><a href="/office-config" class="nav-link">Office Config</a></li>
-          <li class="nav-item"><a href="#" class="nav-link" (click)="authService.logout(); $event.preventDefault()">Logout</a></li>
-        </ng-container>
-        <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
-      </ul>
-    </header>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidenav -->
+      <div class="col-auto px-0" *ngIf="authService.isAuthenticated()">
+        <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarMenuLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="/dashboard">
+                  <i class="bi bi-speedometer2 me-2"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#productsSubmenu" role="button" aria-expanded="false" aria-controls="productsSubmenu">
+                  <i class="bi bi-box me-2"></i>
+                  Products
+                </a>
+                <div class="collapse" id="productsSubmenu">
+                  <ul class="nav flex-column ms-3">
+                    <li class="nav-item">
+                      <a class="nav-link" href="/products/list">Product List</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/products/categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/products/inventory">Inventory</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/profile">
+                  <i class="bi bi-person me-2"></i>
+                  Profile
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/office-config">
+                  <i class="bi bi-gear me-2"></i>
+                  Office Config
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+          <!-- Sidenav Toggle Button -->
+          <button class="btn btn-link d-lg-none me-3" *ngIf="authService.isAuthenticated()" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+            <i class="bi bi-list fs-4"></i>
+          </button>
+          
+          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+            <span class="fs-4">Simple header</span>
+          </a>
+      
+          <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link" [class.active]="!authService.isAuthenticated()">Home</a></li>
+            <ng-container *ngIf="!authService.isAuthenticated()">
+              <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+              <li class="nav-item"><a href="/signup" class="nav-link">Signup</a></li>
+            </ng-container>
+            <ng-container *ngIf="authService.isAuthenticated()">
+              <li class="nav-item"><a href="/dashboard" class="nav-link">Dashboard</a></li>
+              <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>
+              <li class="nav-item"><a href="/office-config" class="nav-link">Office Config</a></li>
+              <li class="nav-item"><a href="#" class="nav-link" (click)="authService.logout(); $event.preventDefault()">Logout</a></li>
+            </ng-container>
+            <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+          </ul>
+        </header>
+        <router-outlet />
+      </div>
+    </div>
   </div>
-  <router-outlet />
 </main>
