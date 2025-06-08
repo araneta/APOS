@@ -1,0 +1,96 @@
+<div class="container mt-4">
+  <h2>Accounts Management</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <button class="btn btn-primary mb-3" (click)="newAccount()">New Account</button>
+
+  <form [formGroup]="accountForm" (ngSubmit)="saveAccount()">
+    <div class="row">
+      <div class="col-md-4">
+        <label>Code</label>
+        <input formControlName="code" class="form-control" />
+      </div>
+      <div class="col-md-4">
+        <label>Name</label>
+        <input formControlName="name" class="form-control" />
+      </div>
+      <div class="col-md-4">
+        <label>Category</label>
+        <select formControlName="category" class="form-select">
+          <option value="">Select</option>
+          <option value="Asset">Asset</option>
+          <option value="Liability">Liability</option>
+          <option value="Equity">Equity</option>
+          <option value="Revenue">Revenue</option>
+          <option value="Expense">Expense</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-4">
+        <label>Currency</label>
+        <input formControlName="currency" class="form-control" placeholder="e.g., USD, IDR" />
+      </div>
+      <div class="col-md-4">
+        <label>Parent Account ID</label>
+        <input type="number" formControlName="parentId" class="form-control" />
+      </div>
+      <div class="col-md-4">
+        <label>Description</label>
+        <input formControlName="description" class="form-control" />
+      </div>
+    </div>
+
+    <div class="form-check mt-3">
+      <input type="checkbox" formControlName="isCashBank" class="form-check-input" id="isCashBank" />
+      <label for="isCashBank" class="form-check-label">Is Cash/Bank</label>
+    </div>
+
+    <div class="form-check mt-2">
+      <input type="checkbox" formControlName="isActive" class="form-check-input" id="isActive" />
+      <label for="isActive" class="form-check-label">Is Active</label>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3" [disabled]="accountForm.invalid">
+      {{ isEditMode ? 'Update' : 'Create' }}
+    </button>
+  </form>
+
+  <hr />
+
+  <h3>Accounts List</h3>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Currency</th>
+        <th>Cash/Bank</th>
+        <th>Active</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let account of accounts">
+        <td>{{ account.code }}</td>
+        <td>{{ account.name }}</td>
+        <td>{{ account.category }}</td>
+        <td>{{ account.currency }}</td>
+        <td>{{ account.isCashBank ? 'Yes' : 'No' }}</td>
+        <td>{{ account.isActive ? 'Yes' : 'No' }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary me-2" (click)="selectAccount(account)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteAccount(account.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="loading" class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>

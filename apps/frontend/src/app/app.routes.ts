@@ -8,6 +8,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { AuthService } from './services/auth.service';
 import { inject } from '@angular/core';
 import { OfficeConfigComponent } from './office-config/office-config.component';
+import { AccountComponent } from './account/account.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -39,6 +40,17 @@ export const routes: Routes = [
     {
         path: 'office-config',
         component: OfficeConfigComponent,
+        canActivate: [() => {
+            const authService = inject(AuthService);
+            if (!authService.isAuthenticated()) {
+                return false;   
+            }
+            return true;
+        }]
+    },
+    {
+        path: 'cash-of-account',
+        component: AccountComponent,
         canActivate: [() => {
             const authService = inject(AuthService);
             if (!authService.isAuthenticated()) {
