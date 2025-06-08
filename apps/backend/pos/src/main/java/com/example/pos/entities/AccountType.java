@@ -9,8 +9,8 @@ package com.example.pos.entities;
  * @author araneta
  */
 public enum AccountType {
-    HEADER("Header"),
-    DETAIL("Detail");
+    H("Header"),
+    D("Detail");
 
     private final String displayName;
 

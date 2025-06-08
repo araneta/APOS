@@ -33,30 +33,22 @@ public class DataSeeder implements CommandLineRunner {
     private AccountCategory mapKelompokToCategory(String kelompok, String namaacc) {
         switch (kelompok) {
             case "1":
-                if (namaacc.toUpperCase().contains("TETAP")) return AccountCategory.FIXED_ASSET;
-                if (namaacc.toUpperCase().contains("PERSEDIAAN")) return AccountCategory.INVENTORY;
-                return AccountCategory.CURRENT_ASSET;
+                return AccountCategory.Asset;
 
             case "2":
-                return AccountCategory.SHORT_TERM_LIABILITY;
+                return AccountCategory.Liability;
 
             case "3":
-                return AccountCategory.EQUITY;
+                return AccountCategory.Equity;
 
             case "4":
-                return AccountCategory.OPERATING_INCOME;
+            case "7":
+                return AccountCategory.Revenue;
 
             case "5":
-                return AccountCategory.COST_OF_SALES;
-
             case "6":
-                return AccountCategory.OPERATING_EXPENSE;
-
-            case "7":
-                return AccountCategory.OTHER_INCOME;
-
             case "8":
-                return AccountCategory.OTHER_EXPENSE;
+                return AccountCategory.Expense;
 
             default:
                 return null;
@@ -85,7 +77,7 @@ public class DataSeeder implements CommandLineRunner {
                 boolean isCashBank = node.get("kasbank").asBoolean();
                 boolean isFxDefault = node.get("defmuutm").asBoolean();
 
-                AccountType type = tipeStr.equalsIgnoreCase("H") ? AccountType.HEADER : AccountType.DETAIL;
+                AccountType type = AccountType.valueOf(tipeStr);
                 AccountCategory category = mapKelompokToCategory(kelompok, name);
 
                 Account account = new Account();
