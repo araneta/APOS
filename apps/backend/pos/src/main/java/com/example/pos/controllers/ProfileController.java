@@ -7,6 +7,7 @@ package com.example.pos.controllers;
 import com.example.pos.dto.BaseResponse;
 import com.example.pos.dto.UpdateProfileRequest;
 import com.example.pos.services.ProfileService;
+import com.example.pos.config.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpServletRequest;
-import com.example.pos.controllers.JwtTokenUtil;
 
 /**
  *

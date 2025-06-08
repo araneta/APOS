@@ -14,6 +14,7 @@ import com.example.pos.dto.LoginRequest;
 import com.example.pos.dto.SecurityUser;
 import com.example.pos.entities.User;
 import com.example.pos.services.AuthService;
+import com.example.pos.config.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

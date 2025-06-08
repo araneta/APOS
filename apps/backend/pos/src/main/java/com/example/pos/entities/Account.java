@@ -71,8 +71,7 @@ public class Account {
     private LocalDateTime updatedAt;
     
     
-    public Account() {
-    }
+    
 
     public Account(String code, String name, AccountType type, AccountCategory category, Account parent, BigDecimal balance) {
         this.code = code;

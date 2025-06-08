@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.example.pos.controllers;
+package com.example.pos.config;
 
-import com.example.pos.configs.JwtProperties;
+import com.example.pos.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -19,10 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author aldo
- */
 @Component
 public class JwtTokenUtil {
 
@@ -44,7 +36,6 @@ public class JwtTokenUtil {
                 .signWith(Keys.hmacShaKeyFor(secretKeyBytes), SignatureAlgorithm.HS256)
                 .compact();
     }
-
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -78,21 +69,4 @@ public class JwtTokenUtil {
     public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
-
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-    }
-
-    public boolean isValidToken(String token) {
-        try {
-            extractAllClaims(token); // Reuses existing method for consistency
-            return true;
-        } catch (JwtException e) {
-            // Log the error instead of silently returning false
-            System.err.println("JWT Validation Failed: " + e.getMessage());
-            return false;
-        }
-    }
-
-}
+} 
