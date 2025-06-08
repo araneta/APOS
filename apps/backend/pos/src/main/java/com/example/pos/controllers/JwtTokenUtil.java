@@ -4,7 +4,7 @@
  */
 package com.example.pos.controllers;
 
-import com.example.pos.config.JwtProperties;
+import com.example.pos.configs.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

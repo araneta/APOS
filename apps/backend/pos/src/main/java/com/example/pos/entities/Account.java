@@ -10,6 +10,7 @@ package com.example.pos.entities;
  */
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -68,4 +69,23 @@ public class Account {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    
+    
+    public Account() {
+    }
+
+    public Account(String code, String name, AccountType type, AccountCategory category, Account parent, BigDecimal balance) {
+        this.code = code;
+        this.name = name;
+        this.type = type;
+        this.category = category;
+        this.parent = parent;
+        this.level = (parent != null) ? parent.getLevel() + 1 : 0;
+        this.isActive = true;
+        this.isCashBank = false;
+        this.isFxDefault = false;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
 }

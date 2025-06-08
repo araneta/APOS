@@ -1,4 +1,4 @@
-package com.example.pos.config;
+package com.example.pos.configs;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
