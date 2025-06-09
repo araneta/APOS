@@ -1,0 +1,13 @@
+ummary of kelompok Values
+The kelompok field uses numbers as string identifiers for top-level account groupings:
+
+| `kelompok` | Meaning (based on `namaacc`)   | Suggested `AccountCategory`                       |
+| ---------- | ------------------------------ | ------------------------------------------------- |
+| `"1"`      | AKTIVA (Assets)                | `CURRENT_ASSET`, `FIXED_ASSET`, `INVENTORY`, etc. |
+| `"2"`      | KEWAJIBAN (Liabilities)        | `SHORT_TERM_LIABILITY`, `LONG_TERM_LIABILITY`     |
+| `"3"`      | MODAL (Equity)                 | `EQUITY`, `RETAINED_EARNINGS`, `CAPITAL`          |
+| `"4"`      | PENDAPATAN (Revenue)           | `OPERATING_INCOME`, `NON_OPERATING_INCOME`        |
+| `"5"`      | HPP (Cost of Goods Sold)       | `COST_OF_SALES`, `PURCHASE_DISCOUNT`              |
+| `"6"`      | BIAYA (Expenses)               | `OPERATING_EXPENSE`, `ADMIN_EXPENSE`, etc.        |
+| `"7"`      | PENDAPATAN LAIN (Other Income) | `OTHER_INCOME`                                    |
+| `"8"`      | BIAYA LAIN (Other Expense)     | `OTHER_EXPENSE`                                   |

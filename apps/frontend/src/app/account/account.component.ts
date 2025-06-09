@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Account, AccountService } from '../services/account.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,CommonModule],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
 })
