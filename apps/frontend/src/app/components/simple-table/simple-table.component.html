@@ -1,0 +1,92 @@
+<div #tableContainer style="width: 100%; min-height: 400px;">
+  <div class="row mb-2">
+    <div class="col-lg-8"></div>
+    <div class="col-lg-4">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Search"
+        (input)="onSearchChange($event)"
+      />
+    </div>
+  </div>
+
+  <div class="ag-theme-alpine mb-3" style="width: 100%;" #agGrid>
+    <ag-grid-angular
+      [columnDefs]="columnDefs"
+      [rowData]="entities"
+      [defaultColDef]="{ sortable: true, resizable: true }"
+      [paginationPageSize]="sizePerPage"
+      [rowSelection]="'single'"
+      domLayout="autoHeight"
+      (gridReady)="onGridReady($event)"
+      (sortChanged)="handleSortChanged($event)"
+    ></ag-grid-angular>
+
+    <app-custom-context-menu
+      *ngIf="contextMenu"
+      [position]="contextMenu.position"
+      [rowData]="contextMenu.rowData"
+      [menuItems]="contextMenu.menuItems"
+      (close)="contextMenu = null"
+    ></app-custom-context-menu>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="pagination-info">
+        Showing {{ (currentPage - 1) * sizePerPage + 1 }} to
+        {{ Math.min(currentPage * sizePerPage, totalDataSize) }} of
+        {{ totalDataSize }} entries
+      </div>
+    </div>
+    <div class="col-md-6">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" (click)="handlePageChange(1)">&laquo;</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" (click)="handlePageChange(currentPage - 1)">
+            &lsaquo;
+          </a>
+        </li>
+        <li
+          *ngFor="let i of [].constructor(Math.ceil(totalDataSize / sizePerPage)); let page = index"
+          class="page-item"
+          [class.active]="page + 1 === currentPage"
+        >
+          <a class="page-link" (click)="handlePageChange(page + 1)">
+            {{ page + 1 }}
+          </a>
+        </li>
+        <li class="page-item">
+          <a
+            class="page-link"
+            (click)="currentPage !== Math.ceil(totalDataSize / sizePerPage) && handlePageChange(currentPage + 1)"
+            [class.disabled]="currentPage === Math.ceil(totalDataSize / sizePerPage)"
+          >
+            &rsaquo;
+          </a>
+        </li>
+        <li class="page-item">
+          <a
+            class="page-link"
+            (click)="handlePageChange(Math.ceil(totalDataSize / sizePerPage))"
+          >
+            &raquo;
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="btn-group mt-2">
+    <button
+      *ngFor="let size of [5, 10, 20, 100, 200]"
+      class="btn btn-secondary btn-sm"
+      (click)="onSizePerPageList(size)"
+    >
+      {{ size }}
+    </button>
+  </div>
+</div>

@@ -61,34 +61,14 @@
   <hr />
 
   <h3>Accounts List</h3>
-
-  <table class="table table-striped table-bordered">
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Currency</th>
-        <th>Cash/Bank</th>
-        <th>Active</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let account of accounts">
-        <td>{{ account.code }}</td>
-        <td>{{ account.name }}</td>
-        <td>{{ account.category }}</td>
-        <td>{{ account.currency }}</td>
-        <td>{{ account.isCashBank ? 'Yes' : 'No' }}</td>
-        <td>{{ account.isActive ? 'Yes' : 'No' }}</td>
-        <td>
-          <button class="btn btn-sm btn-primary me-2" (click)="selectAccount(account)">Edit</button>
-          <button class="btn btn-sm btn-danger" (click)="deleteAccount(account.id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <app-simple-table
+    [getColumnDefs]="getColumnDefs"
+    [onGetRows]="loadData"
+    [sortName]="'id'"
+    [sortOrder]="'asc'"
+    [showNo]="true"
+    [entities]="entities"
+  ></app-simple-table>
 
   <div *ngIf="loading" class="spinner-border text-primary" role="status">
     <span class="visually-hidden">Loading...</span>

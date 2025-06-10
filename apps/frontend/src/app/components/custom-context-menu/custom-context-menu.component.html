@@ -1,0 +1,9 @@
+<ul
+  class="custom-context-menu"
+  *ngIf="position"
+  [ngStyle]="{ top: position.y + 'px', left: position.x + 'px', position: 'absolute' }"
+>
+  <li *ngFor="let item of menuItems" (click)="handleClick(item)">
+    {{ item.label }}
+  </li>
+</ul>
