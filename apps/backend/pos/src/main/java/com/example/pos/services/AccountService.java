@@ -4,11 +4,18 @@
  */
 package com.example.pos.services;
 
+import com.example.pos.dto.Paging;
+import com.example.pos.dto.PagingResult;
 import com.example.pos.entities.Account;
 import com.example.pos.repositories.AccountRepository;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  *
@@ -25,5 +32,9 @@ public class AccountService {
     
     public List<Account> getAllAccounts(){
         return this.repository.findAll();
+    }
+
+    public PagingResult<Account> searchAccounts(Paging paging) {
+        return repository.searchAccounts(paging);
     }
 }

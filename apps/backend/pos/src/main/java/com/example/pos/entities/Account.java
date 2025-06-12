@@ -87,4 +87,50 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
+    /**
+     * @return the level
+     */
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public void setParent(Account parent) {
+        this.parent = parent;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(AccountType type) {
+        this.type = type;
+    }
+
+    public void setCategory(AccountCategory category) {
+        this.category = category;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public void setCashBank(boolean isCashBank) {
+        this.isCashBank = isCashBank;
+    }
+
+    public void setFxDefault(boolean isFxDefault) {
+        this.isFxDefault = isFxDefault;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
 }
