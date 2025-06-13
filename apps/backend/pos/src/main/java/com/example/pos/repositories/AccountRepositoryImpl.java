@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Repository
 public class AccountRepositoryImpl implements AccountRepositoryCustom {
@@ -44,8 +46,8 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom {
         query.where(predicates.toArray(new Predicate[0]));
         
         // Apply sorting
+        List<Order> orders = new ArrayList<>();
         if (!paging.getSort().isEmpty()) {
-            List<Order> orders = new ArrayList<>();
             for (Map.Entry<String, String> entry : paging.getSort().entrySet()) {
                 if ("asc".equalsIgnoreCase(entry.getValue())) {
                     orders.add(cb.asc(root.get(entry.getKey())));
@@ -53,16 +55,29 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom {
                     orders.add(cb.desc(root.get(entry.getKey())));
                 }
             }
-            query.orderBy(orders);
-        } else {
-            query.orderBy(cb.asc(root.get("code")));
         }
+        // Add default sorting by code if no sort is specified
+        if (orders.isEmpty()) {
+            orders.add(cb.asc(root.get("code")));
+        }
+        query.orderBy(orders);
 
-        // Get total count
+        // Get total count using a separate query
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
         Root<Account> countRoot = countQuery.from(Account.class);
         countQuery.select(cb.count(countRoot));
-        countQuery.where(predicates.toArray(new Predicate[0]));
+        
+        // Apply the same predicates to the count query
+        List<Predicate> countPredicates = new ArrayList<>();
+        if (paging.getFilter() != null && !paging.getFilter().trim().isEmpty()) {
+            String likeFilter = "%" + paging.getFilter().toLowerCase() + "%";
+            countPredicates.add(cb.or(
+                cb.like(cb.lower(countRoot.get("code")), likeFilter),
+                cb.like(cb.lower(countRoot.get("name")), likeFilter)
+            ));
+        }
+        countQuery.where(countPredicates.toArray(new Predicate[0]));
+        
         Long total = entityManager.createQuery(countQuery).getSingleResult();
 
         // Get paginated results

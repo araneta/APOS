@@ -9,25 +9,40 @@ import com.example.pos.dto.Paging;
 import com.example.pos.dto.PagingResult;
 import com.example.pos.entities.Account;
 import com.example.pos.services.AccountService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/accounts")
+@Tag(name = "Account Management", description = "APIs for managing accounts")
 public class AccountController {
 
     private final AccountService accountService;
+    private static final List<String> VALID_SORT_COLUMNS = List.of("id", "code", "name", "level", "type", "category", "currency", "createdAt", "updatedAt");
 
     @Autowired
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
+    @Operation(summary = "Get all accounts", description = "Retrieves a list of all accounts in the system")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved all accounts"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized - Authentication required"),
+        @ApiResponse(responseCode = "403", description = "Forbidden - Insufficient permissions")
+    })
     @GetMapping
     public List<AccountDTO> getAllAccounts() {
         return accountService.getAllAccounts().stream()
@@ -35,9 +50,38 @@ public class AccountController {
                 .collect(Collectors.toList());
     }
     
+    @Operation(summary = "Search accounts", description = "Search accounts with pagination and sorting")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved accounts"),
+        @ApiResponse(responseCode = "400", description = "Invalid pagination parameters"),
+        @ApiResponse(responseCode = "401", description = "Unauthorized - Authentication required"),
+        @ApiResponse(responseCode = "403", description = "Forbidden - Insufficient permissions")
+    })
     @GetMapping("/search")    
-    public PagingResult<AccountDTO> searchAccounts(@ModelAttribute Paging paging) {
-        paging.setValidCols(List.of("name", "code"));
+    public PagingResult<AccountDTO> searchAccounts(
+            @Parameter(description = "Search filter text") @RequestParam(required = false) String filter,
+            @Parameter(description = "Page number (1-based)") @RequestParam(required = false) Integer page,
+            @Parameter(description = "Number of items per page") @RequestParam(required = false) Integer pageSize,
+            @Parameter(description = "Sort column (id, code, name, level, type, category, currency, createdAt, updatedAt)") @RequestParam(required = false) String sortCol,
+            @Parameter(description = "Sort direction (asc or desc)") @RequestParam(required = false) String sortDir) {
+        
+        Paging paging = new Paging();
+        // Normalize filter value - trim whitespace and convert empty string to null
+        paging.setFilter(filter != null ? filter.trim() : null);
+        paging.setPage(page);
+        paging.setPageSize(pageSize);
+        
+        // Only set sort if both column and direction are provided and valid
+        if (sortCol != null && !sortCol.isEmpty() && sortDir != null && !sortDir.isEmpty()) {
+            // Convert sort column to lowercase to match entity field names
+            String normalizedSortCol = sortCol.toLowerCase();
+            if (VALID_SORT_COLUMNS.contains(normalizedSortCol)) {
+                paging.setSortCol(normalizedSortCol);
+                paging.setSortDir(sortDir.toLowerCase());
+            }
+        }
+        
+        paging.setValidCols(VALID_SORT_COLUMNS);
         paging.validateSort();
         paging.init(); // Ensure calculation is done
         

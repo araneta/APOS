@@ -5,8 +5,6 @@
 package com.example.pos.dto;
 
 import jakarta.annotation.PostConstruct;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.*;
 
 import java.util.ArrayList;
@@ -39,6 +37,10 @@ public class Paging {
         calculate();
     }
 
+    public void setFilter(String filter) {
+        this.filter = filter;
+    }
+
     public void setSortCol(String col) {
         if (col != null && !col.isEmpty()) {
             this.sort.put(col, "asc");
@@ -50,10 +52,6 @@ public class Paging {
             String lastKey = new ArrayList<>(this.sort.keySet()).get(this.sort.size() - 1);
             this.sort.put(lastKey, dir != null ? dir : "asc");
         }
-    }
-
-    public void setFilter(String filter) {
-        this.filter = filter;
     }
 
     public void setValidCols(List<String> cols) {
