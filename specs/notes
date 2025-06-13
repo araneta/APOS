@@ -5,3 +5,8 @@ export JAVA_HOME=/media/araneta/49909430-d2bd-4bcf-be1d-3c425a4013bf/apps/jdk-17
 ./run.sh 
 araneta
 willamette
+
+Modules:
+  Account:
+    curl http://localhost:8888/api/accounts/search?filter=&page=1&pageSize=12&sortCol=code&sortDir=asc
+

@@ -8,9 +8,12 @@ export const AuthInterceptorService: HttpInterceptorFn = (req, next) => {
   const token = authService.getToken();
   const apiUrl = environment.apiUrl;
 
+  // Only prepend apiUrl if the request URL is not absolute
+  const url = req.url.startsWith('http') ? req.url : `${apiUrl}${req.url}`;
+
   // Automatically attach API URL and JWT token
   const modifiedReq = req.clone({
-    url: `${apiUrl}${req.url}`,
+    url,
     setHeaders: token ? { Authorization: `Bearer ${token}` } : {},
   });
 

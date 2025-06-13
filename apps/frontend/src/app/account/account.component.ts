@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Account, AccountService } from '../services/account.service';
+import { AccountManagementService } from '../api/services/account-management.service';
+import { AccountDto } from '../api/models/account-dto';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { SimpleTableComponent } from '../components/simple-table/simple-table.component';
+import { PagingResultAccountDto } from '../api/models/paging-result-account-dto';
+import { AccountService } from '../services/account.service';
 
 @Component({
   selector: 'app-account',
@@ -13,8 +16,8 @@ import { SimpleTableComponent } from '../components/simple-table/simple-table.co
   styleUrl: './account.component.scss'
 })
 export class AccountComponent implements OnInit {
-  accounts: Account[] = [];
-  selectedAccount?: Account;
+  accounts: AccountDto[] = [];
+  selectedAccount?: AccountDto;
   accountForm: FormGroup;
   isEditMode = false;
   loading = false;
@@ -26,7 +29,11 @@ export class AccountComponent implements OnInit {
   sortName = '';
   sortOrder = 'asc';
   
-  constructor(private accountService: AccountService, private fb: FormBuilder,private toastr: ToastrService) { 
+  constructor(
+    private accountService: AccountService,
+    private fb: FormBuilder,
+    private toastr: ToastrService
+  ) { 
     this.accountForm = this.fb.group({
       id: [null],
       code: ['', Validators.required],
@@ -56,7 +63,7 @@ export class AccountComponent implements OnInit {
         button.innerText = 'Edit';
         button.classList.add('btn', 'btn-sm', 'btn-primary');
         button.addEventListener('click', () => {
-          this.selectAccount(params.data);
+          //this.selectAccount(params.data);
         });
         return button;
       }
@@ -64,41 +71,34 @@ export class AccountComponent implements OnInit {
   ];
 
   loadData = (state: any) => {
-    if (this.accounts.length === 0) {
-      this.loadAccounts();
-      return;
-    }
-    
-    // Calculate pagination
-    const startIndex = (state.currentPage - 1) * state.sizePerPage;
-    const endIndex = Math.min(startIndex + state.sizePerPage, this.accounts.length);
-    const paginatedData = this.accounts.slice(startIndex, endIndex);
-    
-    // Update the table data
-    this.entities = paginatedData;
-    this.totalDataSize = this.accounts.length;
-    this.currentPage = state.currentPage;
-    this.sizePerPage = state.sizePerPage;
-  }
-
-  ngOnInit(): void {
-    this.loadAccounts();
-  }
-
-  loadAccounts(): void {
+    console.log('state', state);
     this.loading = true;
-    this.accountService.getAccounts().subscribe({
-      next: (data) => {
-        this.accounts = data;
+    
+    this.accountService.searchAccounts({
+      page: state.currentPage,
+      pageSize: state.sizePerPage,
+      sortCol: state.sortName,
+      sortDir: state.sortOrder
+    }).subscribe({
+      next: (response: PagingResultAccountDto) => {
+        console.log('API Response:', response);
+        this.entities = response.data || [];
+        this.totalDataSize = response.totalRecords || 0;
+        this.currentPage = state.currentPage;
+        this.sizePerPage = state.sizePerPage;
         this.loading = false;
-        // Trigger data load after accounts are loaded
-        this.loadData(this.getState());
+        state.successCallback(this.entities, this.totalDataSize, this.currentPage, this.sortName, this.sortOrder);
       },
-      error: (err) => {
-        this.toastr.error('Failed to load accounts','Error');
+      error: (error) => {
+        console.error('Error loading accounts:', error);
+        this.errorMessage = 'Failed to load accounts';
         this.loading = false;
       }
     });
+  }
+
+  ngOnInit(): void {
+    // Data will be loaded when the grid is ready
   }
 
   getState() {
@@ -110,7 +110,7 @@ export class AccountComponent implements OnInit {
     };
   }
 
-  selectAccount(account: Account): void {
+  selectAccount(account: AccountDto): void {
     this.isEditMode = true;
     this.selectedAccount = account;
     this.accountForm.patchValue(account);
@@ -126,31 +126,7 @@ export class AccountComponent implements OnInit {
   }
 
   saveAccount(): void {
-    if (this.accountForm.invalid) {
-      return;
-    }
-    const accountData = this.accountForm.value;
-    if (this.isEditMode && accountData.id) {
-      this.accountService.updateAccount(accountData.id, accountData).subscribe({
-        next: () => this.loadAccounts(),
-        error: () => this.toastr.error('Failed to update account','Error')
-      });
-    } else {
-      this.accountService.createAccount(accountData).subscribe({
-        next: () => this.loadAccounts(),
-        error: () => this.toastr.error('Failed to create account','Error')
-      });
-    }
-    this.newAccount();
+    console.log(this.accountForm.value);
   }
 
-  deleteAccount(id?: number): void {
-    if (!id) return;
-    if (confirm('Are you sure you want to delete this account?')) {
-      this.accountService.deleteAccount(id).subscribe({
-        next: () => this.loadAccounts(),
-        error: () => this.toastr.error('Failed to delete account','Error')
-      });
-    }
-  }
 }

@@ -63,7 +63,7 @@
   <h3>Accounts List</h3>
   <app-simple-table
     [getColumnDefs]="getColumnDefs"
-    [onGetRows]="loadData"
+    (getRows)="loadData($event)"
     [sortName]="'id'"
     [sortOrder]="'asc'"
     [showNo]="true"

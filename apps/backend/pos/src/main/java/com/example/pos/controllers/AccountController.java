@@ -60,10 +60,10 @@ public class AccountController {
     @GetMapping("/search")    
     public PagingResult<AccountDTO> searchAccounts(
             @Parameter(description = "Search filter text") @RequestParam(required = false) String filter,
-            @Parameter(description = "Page number (1-based)") @RequestParam(required = false) Integer page,
-            @Parameter(description = "Number of items per page") @RequestParam(required = false) Integer pageSize,
+            @Parameter(description = "Page number (1-based)") @RequestParam(required = false, defaultValue = "1") Integer page,
+            @Parameter(description = "Number of items per page") @RequestParam(required = false, defaultValue = "100") Integer pageSize,
             @Parameter(description = "Sort column (id, code, name, level, type, category, currency, createdAt, updatedAt)") @RequestParam(required = false) String sortCol,
-            @Parameter(description = "Sort direction (asc or desc)") @RequestParam(required = false) String sortDir) {
+            @Parameter(description = "Sort direction (asc or desc)") @RequestParam(required = false, defaultValue = "asc") String sortDir) {
         
         Paging paging = new Paging();
         // Normalize filter value - trim whitespace and convert empty string to null

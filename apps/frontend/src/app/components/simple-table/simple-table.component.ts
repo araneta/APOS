@@ -1,6 +1,8 @@
 import {
   Component,
   Input,
+  Output,
+  EventEmitter,
   ViewChild,
   ElementRef,
   AfterViewInit,
@@ -23,7 +25,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 })
 export class SimpleTableComponent implements AfterViewInit, OnDestroy {
   @Input() getColumnDefs!: () => ColDef[];
-  @Input() onGetRows!: (state: any) => void;
+  @Output() getRows = new EventEmitter<any>();
   @Input() sortName: string = 'ID';
   @Input() sortOrder: string = 'asc';
   @Input() showNo: boolean = false;
@@ -71,11 +73,12 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
   }
 
   onGridReady(params: any) {
+    console.log('onGridReady',params);  
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
     this.gridApi.sizeColumnsToFit();
-    params.api.setHeaderHeight(32);
-    this.onGetRows(this.getState());
+    //params.api.setHeaderHeight(32);
+    this.getRows.emit(this.getState());
   }
 
   getState() {
@@ -87,7 +90,8 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
       currentPage: this.currentPage,
       sortName: this.sortName,
       sortOrder: this.sortOrder,
-      searchText: this.searchText
+      searchText: this.searchText,
+      successCallback: this.successCallback.bind(this),
     };
   }
 
@@ -98,6 +102,7 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
     sortName: string,
     sortOrder: string
   ) {
+    console.log('successCallback', entities, totalDataSize, currentPage, sortName, sortOrder);
     this.entities = entities;
     this.totalDataSize = totalDataSize;
     this.currentPage = currentPage;
@@ -110,20 +115,20 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
     if (this.searchTimeout) clearTimeout(this.searchTimeout);
     this.searchTimeout = setTimeout(() => {
       this.searchText = value;
-      this.onGetRows(this.getState());
+      this.getRows.emit(this.getState());
     }, 1000);
   }
 
   onSizePerPageList(size: number) {
     this.sizePerPage = size;
     this.currentPage = 1;
-    this.onGetRows(this.getState());
+    this.getRows.emit(this.getState());
   }
 
   onSortChange(sortName: string, sortOrder: string) {
     this.sortName = sortName;
     this.sortOrder = sortOrder;
-    this.onGetRows(this.getState());
+    this.getRows.emit(this.getState());
   }
 
   handleSortChanged(params: any) {
@@ -138,7 +143,7 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
 
   handlePageChange(page: number) {
     this.currentPage = page;
-    this.onGetRows(this.getState());
+    this.getRows.emit(this.getState());
   }
 
   rowNumberGetter(params: any) {
