@@ -1,0 +1,13 @@
+export * from './accountManagement.service';
+import { AccountManagementService } from './accountManagement.service';
+export * from './accountManagement.serviceInterface';
+export * from './authController.service';
+import { AuthControllerService } from './authController.service';
+export * from './authController.serviceInterface';
+export * from './officeConfigController.service';
+import { OfficeConfigControllerService } from './officeConfigController.service';
+export * from './officeConfigController.serviceInterface';
+export * from './profileController.service';
+import { ProfileControllerService } from './profileController.service';
+export * from './profileController.serviceInterface';
+export const APIS = [AccountManagementService, AuthControllerService, OfficeConfigControllerService, ProfileControllerService];

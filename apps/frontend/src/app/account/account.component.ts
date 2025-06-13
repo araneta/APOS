@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountManagementService } from '../api/services/account-management.service';
-import { AccountDto } from '../api/models/account-dto';
+import { AccountDTO } from '../api/model/accountDTO';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { SimpleTableComponent } from '../components/simple-table/simple-table.component';
-import { PagingResultAccountDto } from '../api/models/paging-result-account-dto';
-import { AccountService } from '../services/account.service';
+import { PagingResultAccountDTO } from '../api/model/pagingResultAccountDTO';
+import { AccountManagementService } from '../api/api/accountManagement.service';
 
 @Component({
   selector: 'app-account',
@@ -16,8 +15,8 @@ import { AccountService } from '../services/account.service';
   styleUrl: './account.component.scss'
 })
 export class AccountComponent implements OnInit {
-  accounts: AccountDto[] = [];
-  selectedAccount?: AccountDto;
+  accounts: AccountDTO[] = [];
+  selectedAccount?: AccountDTO;
   accountForm: FormGroup;
   isEditMode = false;
   loading = false;
@@ -30,7 +29,7 @@ export class AccountComponent implements OnInit {
   sortOrder = 'asc';
   
   constructor(
-    private accountService: AccountService,
+    private accountManagementService: AccountManagementService,
     private fb: FormBuilder,
     private toastr: ToastrService
   ) { 
@@ -71,16 +70,25 @@ export class AccountComponent implements OnInit {
   ];
 
   loadData = (state: any) => {
-    console.log('state', state);
-    this.loading = true;
-    
-    this.accountService.searchAccounts({
-      page: state.currentPage,
+    console.log('Request state:', {
+      currentPage: state.currentPage,
       pageSize: state.sizePerPage,
       sortCol: state.sortName,
       sortDir: state.sortOrder
-    }).subscribe({
-      next: (response: PagingResultAccountDto) => {
+    });
+    this.loading = true;
+    
+    this.accountManagementService.searchAccounts(
+      undefined, // filter
+      state.currentPage,
+      state.sizePerPage,
+      state.sortName,
+      state.sortOrder,
+      'body' as const,
+      false,
+      { httpHeaderAccept: 'application/json' }
+    ).subscribe({
+      next: (response: PagingResultAccountDTO) => {
         console.log('API Response:', response);
         this.entities = response.data || [];
         this.totalDataSize = response.totalRecords || 0;
@@ -90,7 +98,12 @@ export class AccountComponent implements OnInit {
         state.successCallback(this.entities, this.totalDataSize, this.currentPage, this.sortName, this.sortOrder);
       },
       error: (error) => {
-        console.error('Error loading accounts:', error);
+        console.error('Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          message: error.message
+        });
         this.errorMessage = 'Failed to load accounts';
         this.loading = false;
       }
@@ -110,7 +123,7 @@ export class AccountComponent implements OnInit {
     };
   }
 
-  selectAccount(account: AccountDto): void {
+  selectAccount(account: AccountDTO): void {
     this.isEditMode = true;
     this.selectedAccount = account;
     this.accountForm.patchValue(account);
