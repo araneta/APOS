@@ -142,6 +142,7 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
         //console.log('Sorted Columns:', sortedColumns);
         const { colId, sort } = sortedColumns[0];
         console.log('Column ID:', colId, 'Sort Order:', sort);
+        this.currentPage = 1; // Reset to first page on search
         this.onSortChange(colId, sort);
       }
     }

@@ -63,6 +63,7 @@ export class AccountComponent implements OnInit {
         button.classList.add('btn', 'btn-sm', 'btn-primary');
         button.addEventListener('click', () => {
           //this.selectAccount(params.data);
+          console.log('edit',params.data);
         });
         return button;
       }
