@@ -74,12 +74,13 @@ export class AccountComponent implements OnInit {
       currentPage: state.currentPage,
       pageSize: state.sizePerPage,
       sortCol: state.sortName,
-      sortDir: state.sortOrder
+      sortDir: state.sortOrder,
+      searchText: state.searchText,
     });
     this.loading = true;
     
     this.accountManagementService.searchAccounts(
-      undefined, // filter
+      state.searchText, // filter
       state.currentPage,
       state.sizePerPage,
       state.sortName,

@@ -112,9 +112,12 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
 
   onSearchChange(event: any) {
     const value = event.target.value;
+    
     if (this.searchTimeout) clearTimeout(this.searchTimeout);
     this.searchTimeout = setTimeout(() => {
       this.searchText = value;
+      this.currentPage = 1; // Reset to first page on search
+      console.log('onSearchChange', value);
       this.getRows.emit(this.getState());
     }, 1000);
   }

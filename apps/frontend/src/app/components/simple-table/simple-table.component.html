@@ -21,6 +21,8 @@
       domLayout="autoHeight"
       (gridReady)="onGridReady($event)"
       (sortChanged)="handleSortChanged($event)"
+      [enableCellTextSelection]="true"
+      [ensureDomOrder]="true"
     ></ag-grid-angular>
 
     <app-custom-context-menu
