@@ -62,7 +62,7 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
       {
         headerName: 'No',
         valueGetter: this.rowNumberGetter.bind(this),
-        width: 60,
+        width: 90,
         menuTabs: [],
         sortable: false,
         filter: false,
@@ -175,4 +175,34 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
       this.gridApi.sizeColumnsToFit();
     }
   };
+
+  get totalPages(): number {
+    return Math.ceil(this.totalDataSize / this.sizePerPage) || 1;
+  }
+
+  get pages(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  get visiblePages(): number[] {
+    const total = this.totalPages;
+    const current = this.currentPage;
+    const delta = 2; // Number of pages to show before and after current
+    let start = Math.max(1, current - delta);
+    let end = Math.min(total, current + delta);
+
+    // Adjust if at the start or end
+    if (current <= delta) {
+      end = Math.min(total, 1 + 2 * delta);
+    }
+    if (current + delta > total) {
+      start = Math.max(1, total - 2 * delta);
+    }
+
+    const pages = [];
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
 }

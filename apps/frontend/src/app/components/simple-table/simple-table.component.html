@@ -41,54 +41,69 @@
         {{ Math.min(currentPage * sizePerPage, totalDataSize) }} of
         {{ totalDataSize }} entries
       </div>
+      <div class="btn-group mt-2">
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle btn-sm"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {{ sizePerPage }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button
+              *ngFor="let size of [5, 10, 20, 100, 200]"
+              class="dropdown-item"
+              (click)="onSizePerPageList(size)"
+            >
+              {{ size }}
+            </button>
+          </div>
+        </div>
+        
+      </div>
     </div>
     <div class="col-md-6">
-      <ul class="pagination">
-        <li class="page-item">
-          <a class="page-link" (click)="handlePageChange(1)">&laquo;</a>
+      <ul class="pagination float-end">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="currentPage > 1 && handlePageChange(1)">&laquo;</a>
         </li>
-        <li class="page-item">
-          <a class="page-link" (click)="handlePageChange(currentPage - 1)">
-            &lsaquo;
-          </a>
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="currentPage > 1 && handlePageChange(currentPage - 1)">&lsaquo;</a>
+        </li>
+        <li class="page-item" *ngIf="visiblePages[0] > 1">
+          <a class="page-link" (click)="handlePageChange(1)">1</a>
+        </li>
+        <li class="page-item disabled" *ngIf="visiblePages[0] > 2">
+          <span class="page-link">...</span>
         </li>
         <li
-          *ngFor="let i of [].constructor(Math.ceil(totalDataSize / sizePerPage)); let page = index"
+          *ngFor="let page of visiblePages"
           class="page-item"
-          [class.active]="page + 1 === currentPage"
+          [class.active]="page === currentPage"
         >
-          <a class="page-link" (click)="handlePageChange(page + 1)">
-            {{ page + 1 }}
+          <a class="page-link" (click)="handlePageChange(page)">
+            {{ page }}
           </a>
         </li>
-        <li class="page-item">
-          <a
-            class="page-link"
-            (click)="currentPage !== Math.ceil(totalDataSize / sizePerPage) && handlePageChange(currentPage + 1)"
-            [class.disabled]="currentPage === Math.ceil(totalDataSize / sizePerPage)"
-          >
-            &rsaquo;
-          </a>
+        <li class="page-item disabled" *ngIf="visiblePages[visiblePages.length - 1] < totalPages - 1">
+          <span class="page-link">...</span>
         </li>
-        <li class="page-item">
-          <a
-            class="page-link"
-            (click)="handlePageChange(Math.ceil(totalDataSize / sizePerPage))"
-          >
-            &raquo;
-          </a>
+        <li class="page-item" *ngIf="visiblePages[visiblePages.length - 1] < totalPages">
+          <a class="page-link" (click)="handlePageChange(totalPages)">{{ totalPages }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="currentPage < totalPages && handlePageChange(currentPage + 1)">&rsaquo;</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="currentPage < totalPages && handlePageChange(totalPages)">&raquo;</a>
         </li>
       </ul>
     </div>
   </div>
 
-  <div class="btn-group mt-2">
-    <button
-      *ngFor="let size of [5, 10, 20, 100, 200]"
-      class="btn btn-secondary btn-sm"
-      (click)="onSizePerPageList(size)"
-    >
-      {{ size }}
-    </button>
-  </div>
+  
 </div>
