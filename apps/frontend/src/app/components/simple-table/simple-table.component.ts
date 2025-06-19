@@ -132,10 +132,13 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
   }
 
   handleSortChanged(params: any) {
-    if (params.source === 'uiColumnSorted') {
-      const sortedColumns = params.columnApi.getColumnState().filter((col: { sort: string }) => col.sort);
+    console.log('handleSortChanged', params);
+    if (params.source === 'uiColumnSorted') {            
+      const sortedColumns = params.columns.filter((col: { sort: string }) => col.sort);
       if (sortedColumns.length > 0) {
+        //console.log('Sorted Columns:', sortedColumns);
         const { colId, sort } = sortedColumns[0];
+        console.log('Column ID:', colId, 'Sort Order:', sort);
         this.onSortChange(colId, sort);
       }
     }
