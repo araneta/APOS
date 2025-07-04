@@ -8,4 +8,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface AccountRepositoryCustom {
     PagingResult<Account> searchAccounts(Paging paging);
+    
+    PagingResult<Account> searchAccountsByParentID(long parentID, Paging paging);
 } 

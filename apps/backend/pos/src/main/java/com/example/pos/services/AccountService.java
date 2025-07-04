@@ -34,4 +34,19 @@ public class AccountService {
     public PagingResult<Account> searchAccounts(Paging paging) {
         return repository.searchAccounts(paging);
     }
+    
+    public PagingResult<Account> searchCashAccounts(Paging paging) {
+        var parentCashAccount = repository.findByCode("1-1100");
+        if(parentCashAccount.isPresent()){
+            return this.searchAccountsByParentID(parentCashAccount.get().getId(), paging);
+        }
+        PagingResult<Account> result = new PagingResult<>();
+        return result;
+    }
+    
+    public PagingResult<Account> searchAccountsByParentID(long parentID, Paging paging) {
+        return repository.searchAccountsByParentID(parentID, paging);
+    }
+    
+    
 }

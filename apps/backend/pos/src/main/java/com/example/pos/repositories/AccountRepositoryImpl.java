@@ -94,4 +94,75 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom {
         
         return result;
     }
+    
+    @Override
+    public PagingResult<Account> searchAccountsByParentID(long parentID, Paging paging){
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Account> query = cb.createQuery(Account.class);
+        Root<Account> root = query.from(Account.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        
+        predicates.add(cb.equal(root.get("parent").get("id"), parentID));
+        
+        if (paging.getFilter() != null && !paging.getFilter().trim().isEmpty()) {
+            String likeFilter = "%" + paging.getFilter().toLowerCase() + "%";
+            predicates.add(cb.or(
+                cb.like(cb.lower(root.get("code")), likeFilter),
+                cb.like(cb.lower(root.get("name")), likeFilter)
+            ));
+        }
+        
+        query.where(predicates.toArray(new Predicate[0]));
+        
+        // Apply sorting
+        List<Order> orders = new ArrayList<>();
+        if (!paging.getSort().isEmpty()) {
+            for (Map.Entry<String, String> entry : paging.getSort().entrySet()) {
+                if ("asc".equalsIgnoreCase(entry.getValue())) {
+                    orders.add(cb.asc(root.get(entry.getKey())));
+                } else {
+                    orders.add(cb.desc(root.get(entry.getKey())));
+                }
+            }
+        }
+        // Add default sorting by code if no sort is specified
+        if (orders.isEmpty()) {
+            orders.add(cb.asc(root.get("code")));
+        }
+        query.orderBy(orders);
+
+        // Get total count using a separate query
+        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        Root<Account> countRoot = countQuery.from(Account.class);
+        countQuery.select(cb.count(countRoot));
+        
+        // Apply the same predicates to the count query
+        List<Predicate> countPredicates = new ArrayList<>();
+        countPredicates.add(cb.equal(countRoot.get("parent").get("id"), parentID));
+        if (paging.getFilter() != null && !paging.getFilter().trim().isEmpty()) {
+            String likeFilter = "%" + paging.getFilter().toLowerCase() + "%";
+            countPredicates.add(cb.or(
+                cb.like(cb.lower(countRoot.get("code")), likeFilter),
+                cb.like(cb.lower(countRoot.get("name")), likeFilter)
+            ));
+        }
+        countQuery.where(countPredicates.toArray(new Predicate[0]));
+        
+        Long total = entityManager.createQuery(countQuery).getSingleResult();
+
+        // Get paginated results
+        List<Account> accounts = entityManager.createQuery(query)
+            .setFirstResult(paging.getStart())
+            .setMaxResults(paging.getPageSize())
+            .getResultList();
+
+        // Create PagingResult
+        PagingResult<Account> result = new PagingResult<>();
+        result.setData(accounts);
+        result.setTotalRecords(total.intValue());
+        result.calculate(paging);
+        
+        return result;
+    }
 } 

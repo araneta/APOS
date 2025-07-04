@@ -15,13 +15,17 @@ import { AccountManagementService } from '../api/api/accountManagement.service';
   styleUrl: './account.component.scss'
 })
 export class AccountComponent implements OnInit {
-  accounts: AccountDTO[] = [];
+  
+  cashAccounts: AccountDTO[] = [];
+  inventoryAccounts: AccountDTO[] = [];
+  incomeAccounts: AccountDTO[] = [];
+
   selectedAccount?: AccountDTO;
   accountForm: FormGroup;
   isEditMode = false;
   loading = false;
   errorMessage = '';
-  entities: any[] = [];
+  //entities: any[] = [];
   totalDataSize = 0;
   currentPage = 1;
   sizePerPage = 10;
@@ -70,7 +74,7 @@ export class AccountComponent implements OnInit {
     }
   ];
 
-  loadData = (state: any) => {
+  loadDataCashAccounts = (state: any) => {
     console.log('Request state:', {
       currentPage: state.currentPage,
       pageSize: state.sizePerPage,
@@ -80,7 +84,7 @@ export class AccountComponent implements OnInit {
     });
     this.loading = true;
     
-    this.accountManagementService.searchAccounts(
+    this.accountManagementService.searchCashAccounts(
       state.searchText, // filter
       state.currentPage,
       state.sizePerPage,
@@ -92,12 +96,12 @@ export class AccountComponent implements OnInit {
     ).subscribe({
       next: (response: PagingResultAccountDTO) => {
         console.log('API Response:', response);
-        this.entities = response.data || [];
+        this.cashAccounts = response.data || [];
         this.totalDataSize = response.totalRecords || 0;
         this.currentPage = state.currentPage;
         this.sizePerPage = state.sizePerPage;
         this.loading = false;
-        state.successCallback(this.entities, this.totalDataSize, this.currentPage, this.sortName, this.sortOrder);
+        state.successCallback(this.cashAccounts, this.totalDataSize, this.currentPage, this.sortName, this.sortOrder);
       },
       error: (error) => {
         console.error('Error details:', {
@@ -106,7 +110,7 @@ export class AccountComponent implements OnInit {
           error: error.error,
           message: error.message
         });
-        this.errorMessage = 'Failed to load accounts';
+        this.errorMessage = 'Failed to load cashAccounts';
         this.loading = false;
       }
     });

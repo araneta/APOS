@@ -14,12 +14,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,6 +85,55 @@ public class AccountController {
         paging.init(); // Ensure calculation is done
         
         PagingResult<Account> result = accountService.searchAccounts(paging);
+        PagingResult<AccountDTO> dtoResult = new PagingResult<>();
+        
+        // Convert the data to DTOs
+        List<AccountDTO> dtoList = result.getData().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        
+        // Copy pagination metadata
+        dtoResult.setData(dtoList);
+        dtoResult.setTotalRecords(result.getTotalRecords());
+        dtoResult.setTotalDisplayRecords(result.getTotalDisplayRecords());
+        dtoResult.setPage(result.getPage());
+        dtoResult.setTotalPages(result.getTotalPages());
+        dtoResult.setStart(result.getStart());
+        dtoResult.setEnd(result.getEnd());
+        dtoResult.setSort(result.getSort());
+        
+        return dtoResult;
+    }
+    
+    @GetMapping("/search-cash-accounts")    
+    public PagingResult<AccountDTO> searchCashAccounts(            
+            @Parameter(description = "Search filter text") @RequestParam(required = false) String filter,
+            @Parameter(description = "Page number (1-based)") @RequestParam(required = false, defaultValue = "1") Integer page,
+            @Parameter(description = "Number of items per page") @RequestParam(required = false, defaultValue = "100") Integer pageSize,
+            @Parameter(description = "Sort column (id, code, name, level, type, category, currency, createdAt, updatedAt)") @RequestParam(required = false) String sortCol,
+            @Parameter(description = "Sort direction (asc or desc)") @RequestParam(required = false, defaultValue = "asc") String sortDir) {
+        
+        Paging paging = new Paging();
+        // Normalize filter value - trim whitespace and convert empty string to null
+        paging.setFilter(filter != null ? filter.trim() : null);
+        paging.setPage(page);
+        paging.setPageSize(pageSize);
+        
+        // Only set sort if both column and direction are provided and valid
+        if (sortCol != null && !sortCol.isEmpty() && sortDir != null && !sortDir.isEmpty()) {
+            // Convert sort column to lowercase to match entity field names
+            String normalizedSortCol = sortCol.toLowerCase();
+            if (VALID_SORT_COLUMNS.contains(normalizedSortCol)) {
+                paging.setSortCol(normalizedSortCol);
+                paging.setSortDir(sortDir.toLowerCase());
+            }
+        }
+        
+        paging.setValidCols(VALID_SORT_COLUMNS);
+        paging.validateSort();
+        paging.init(); // Ensure calculation is done
+        
+        PagingResult<Account> result = accountService.searchCashAccounts(paging);
         PagingResult<AccountDTO> dtoResult = new PagingResult<>();
         
         // Convert the data to DTOs

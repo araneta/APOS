@@ -1,47 +1,9 @@
 <div class="container">
     <div class="row">
       <div class="col">
-        <form [formGroup]="profileForm"  (ngSubmit)="onSubmit()">
-            <label for="first-name">First Name: </label>
-            <input id="first-name" type="text" formControlName="firstName">
-            <label for="last-name">Last Name: </label>
-            <input id="last-name" type="text" formControlName="lastName">
-            <button type="submit">Save</button>
-          </form>
-      </div>
-      <div class="col">
-        <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form [formGroup]="teloForm"  (ngSubmit)="onSubmitTelo()">
-                <label for="first-name">First Name: </label>
-                <input id="first-name" type="text" formControlName="firstName">
-                <label for="last-name">Last Name: </label>
-                <input id="last-name" type="text" formControlName="lastName">
-                <button type="submit">Save</button>
-              </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+        <h1>Welcome to the Point of Sales App</h1>
+        <p>This point of sales application built using Angular with bootstrap 5 for the frontend and Java Spring boot for the backend</p>
+        <p>please login to use this application</p>
       </div>
     </div>
-  </div>
-      </div>
-      <div class="col">
-        Column
-      </div>
-    </div>
-  </div>
+</div>
