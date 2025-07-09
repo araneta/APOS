@@ -44,6 +44,33 @@ public class AccountService {
         return result;
     }
     
+    public PagingResult<Account> searchInventoryAccounts(Paging paging) {
+        var parentCashAccount = repository.findByCode("1-2000");
+        if(parentCashAccount.isPresent()){
+            return this.searchAccountsByParentID(parentCashAccount.get().getId(), paging);
+        }
+        PagingResult<Account> result = new PagingResult<>();
+        return result;
+    }
+    
+    public PagingResult<Account> searchIncomeAccounts(Paging paging) {
+        var parentCashAccount = repository.findByCode("4-2000");
+        if(parentCashAccount.isPresent()){
+            return this.searchAccountsByParentID(parentCashAccount.get().getId(), paging);
+        }
+        PagingResult<Account> result = new PagingResult<>();
+        return result;
+    }
+    
+    public PagingResult<Account> searchExpenseAccounts(Paging paging) {
+        var parentCashAccount = repository.findByCode("6-9001");
+        if(parentCashAccount.isPresent()){
+            return this.searchAccountsByParentID(parentCashAccount.get().getId(), paging);
+        }
+        PagingResult<Account> result = new PagingResult<>();
+        return result;
+    }
+    
     public PagingResult<Account> searchAccountsByParentID(long parentID, Paging paging) {
         return repository.searchAccountsByParentID(parentID, paging);
     }

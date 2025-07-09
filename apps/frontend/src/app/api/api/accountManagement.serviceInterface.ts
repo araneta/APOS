@@ -51,4 +51,37 @@ export interface AccountManagementServiceInterface {
      */
     searchCashAccounts(filter?: string, page?: number, pageSize?: number, sortCol?: string, sortDir?: string, extraHttpRequestParams?: any): Observable<PagingResultAccountDTO>;
 
+    /**
+     * 
+     * 
+     * @param filter Search filter text
+     * @param page Page number (1-based)
+     * @param pageSize Number of items per page
+     * @param sortCol Sort column (id, code, name, level, type, category, currency, createdAt, updatedAt)
+     * @param sortDir Sort direction (asc or desc)
+     */
+    searchExpenseAccounts(filter?: string, page?: number, pageSize?: number, sortCol?: string, sortDir?: string, extraHttpRequestParams?: any): Observable<PagingResultAccountDTO>;
+
+    /**
+     * 
+     * 
+     * @param filter Search filter text
+     * @param page Page number (1-based)
+     * @param pageSize Number of items per page
+     * @param sortCol Sort column (id, code, name, level, type, category, currency, createdAt, updatedAt)
+     * @param sortDir Sort direction (asc or desc)
+     */
+    searchIncomeAccounts(filter?: string, page?: number, pageSize?: number, sortCol?: string, sortDir?: string, extraHttpRequestParams?: any): Observable<PagingResultAccountDTO>;
+
+    /**
+     * 
+     * 
+     * @param filter Search filter text
+     * @param page Page number (1-based)
+     * @param pageSize Number of items per page
+     * @param sortCol Sort column (id, code, name, level, type, category, currency, createdAt, updatedAt)
+     * @param sortDir Sort direction (asc or desc)
+     */
+    searchInventoryAccounts(filter?: string, page?: number, pageSize?: number, sortCol?: string, sortDir?: string, extraHttpRequestParams?: any): Observable<PagingResultAccountDTO>;
+
 }

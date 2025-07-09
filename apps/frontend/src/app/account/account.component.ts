@@ -6,11 +6,17 @@ import { CommonModule } from '@angular/common';
 import { SimpleTableComponent } from '../components/simple-table/simple-table.component';
 import { PagingResultAccountDTO } from '../api/model/pagingResultAccountDTO';
 import { AccountManagementService } from '../api/api/accountManagement.service';
+import {AccountCashTabComponent} from '../components/account-cash-tab/account-cash-tab.component';
+import { AccountInventoryTabComponent } from '../components/acoount-inventory-tab/account-inventory-tab.component';
+import { AccountIncomeTabComponent } from '../components/account-income-tab/account-income-tab.component';
+import { AccountExpenseTabComponent } from '../components/account-expense-tab/account-expense-tab.component';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [ReactiveFormsModule,CommonModule, SimpleTableComponent],
+  imports: [ReactiveFormsModule,CommonModule, SimpleTableComponent, 
+    AccountCashTabComponent, AccountInventoryTabComponent, 
+    AccountIncomeTabComponent,AccountExpenseTabComponent],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
 })
@@ -19,6 +25,7 @@ export class AccountComponent implements OnInit {
   cashAccounts: AccountDTO[] = [];
   inventoryAccounts: AccountDTO[] = [];
   incomeAccounts: AccountDTO[] = [];
+  expenseAccounts: AccountDTO[] = [];
 
   selectedAccount?: AccountDTO;
   accountForm: FormGroup;
@@ -74,7 +81,7 @@ export class AccountComponent implements OnInit {
     }
   ];
 
-  loadDataCashAccounts = (state: any) => {
+  loadDataIncomeAccounts = (state: any) => {
     console.log('Request state:', {
       currentPage: state.currentPage,
       pageSize: state.sizePerPage,
@@ -84,7 +91,7 @@ export class AccountComponent implements OnInit {
     });
     this.loading = true;
     
-    this.accountManagementService.searchCashAccounts(
+    this.accountManagementService.searchIncomeAccounts(
       state.searchText, // filter
       state.currentPage,
       state.sizePerPage,
@@ -102,6 +109,48 @@ export class AccountComponent implements OnInit {
         this.sizePerPage = state.sizePerPage;
         this.loading = false;
         state.successCallback(this.cashAccounts, this.totalDataSize, this.currentPage, this.sortName, this.sortOrder);
+      },
+      error: (error) => {
+        console.error('Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          message: error.message
+        });
+        this.errorMessage = 'Failed to load cashAccounts';
+        this.loading = false;
+      }
+    });
+  }
+
+  loadDataExpenseAccounts = (state: any) => {
+    console.log('Request state:', {
+      currentPage: state.currentPage,
+      pageSize: state.sizePerPage,
+      sortCol: state.sortName,
+      sortDir: state.sortOrder,
+      searchText: state.searchText,
+    });
+    this.loading = true;
+    
+    this.accountManagementService.searchExpenseAccounts(
+      state.searchText, // filter
+      state.currentPage,
+      state.sizePerPage,
+      state.sortName,
+      state.sortOrder,
+      'body' as const,
+      false,
+      { httpHeaderAccept: 'application/json' }
+    ).subscribe({
+      next: (response: PagingResultAccountDTO) => {
+        console.log('API Response:', response);
+        this.cashAccounts = response.data || [];
+        this.totalDataSize = response.totalRecords || 0;
+        this.currentPage = state.currentPage;
+        this.sizePerPage = state.sizePerPage;
+        this.loading = false;
+        state.successCallback(this.expenseAccounts, this.totalDataSize, this.currentPage, this.sortName, this.sortOrder);
       },
       error: (error) => {
         console.error('Error details:', {

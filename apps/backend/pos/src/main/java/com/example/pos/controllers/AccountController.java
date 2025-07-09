@@ -153,6 +153,153 @@ public class AccountController {
         
         return dtoResult;
     }
+    
+    @GetMapping("/search-inventory-accounts")    
+    public PagingResult<AccountDTO> searchInventoryAccounts(            
+            @Parameter(description = "Search filter text") @RequestParam(required = false) String filter,
+            @Parameter(description = "Page number (1-based)") @RequestParam(required = false, defaultValue = "1") Integer page,
+            @Parameter(description = "Number of items per page") @RequestParam(required = false, defaultValue = "100") Integer pageSize,
+            @Parameter(description = "Sort column (id, code, name, level, type, category, currency, createdAt, updatedAt)") @RequestParam(required = false) String sortCol,
+            @Parameter(description = "Sort direction (asc or desc)") @RequestParam(required = false, defaultValue = "asc") String sortDir) {
+        
+        Paging paging = new Paging();
+        // Normalize filter value - trim whitespace and convert empty string to null
+        paging.setFilter(filter != null ? filter.trim() : null);
+        paging.setPage(page);
+        paging.setPageSize(pageSize);
+        
+        // Only set sort if both column and direction are provided and valid
+        if (sortCol != null && !sortCol.isEmpty() && sortDir != null && !sortDir.isEmpty()) {
+            // Convert sort column to lowercase to match entity field names
+            String normalizedSortCol = sortCol.toLowerCase();
+            if (VALID_SORT_COLUMNS.contains(normalizedSortCol)) {
+                paging.setSortCol(normalizedSortCol);
+                paging.setSortDir(sortDir.toLowerCase());
+            }
+        }
+        
+        paging.setValidCols(VALID_SORT_COLUMNS);
+        paging.validateSort();
+        paging.init(); // Ensure calculation is done
+        
+        PagingResult<Account> result = accountService.searchInventoryAccounts(paging);
+        PagingResult<AccountDTO> dtoResult = new PagingResult<>();
+        
+        // Convert the data to DTOs
+        List<AccountDTO> dtoList = result.getData().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        
+        // Copy pagination metadata
+        dtoResult.setData(dtoList);
+        dtoResult.setTotalRecords(result.getTotalRecords());
+        dtoResult.setTotalDisplayRecords(result.getTotalDisplayRecords());
+        dtoResult.setPage(result.getPage());
+        dtoResult.setTotalPages(result.getTotalPages());
+        dtoResult.setStart(result.getStart());
+        dtoResult.setEnd(result.getEnd());
+        dtoResult.setSort(result.getSort());
+        
+        return dtoResult;
+    }
+
+    @GetMapping("/search-income-accounts")    
+    public PagingResult<AccountDTO> searchIncomeAccounts(            
+            @Parameter(description = "Search filter text") @RequestParam(required = false) String filter,
+            @Parameter(description = "Page number (1-based)") @RequestParam(required = false, defaultValue = "1") Integer page,
+            @Parameter(description = "Number of items per page") @RequestParam(required = false, defaultValue = "100") Integer pageSize,
+            @Parameter(description = "Sort column (id, code, name, level, type, category, currency, createdAt, updatedAt)") @RequestParam(required = false) String sortCol,
+            @Parameter(description = "Sort direction (asc or desc)") @RequestParam(required = false, defaultValue = "asc") String sortDir) {
+        
+        Paging paging = new Paging();
+        // Normalize filter value - trim whitespace and convert empty string to null
+        paging.setFilter(filter != null ? filter.trim() : null);
+        paging.setPage(page);
+        paging.setPageSize(pageSize);
+        
+        // Only set sort if both column and direction are provided and valid
+        if (sortCol != null && !sortCol.isEmpty() && sortDir != null && !sortDir.isEmpty()) {
+            // Convert sort column to lowercase to match entity field names
+            String normalizedSortCol = sortCol.toLowerCase();
+            if (VALID_SORT_COLUMNS.contains(normalizedSortCol)) {
+                paging.setSortCol(normalizedSortCol);
+                paging.setSortDir(sortDir.toLowerCase());
+            }
+        }
+        
+        paging.setValidCols(VALID_SORT_COLUMNS);
+        paging.validateSort();
+        paging.init(); // Ensure calculation is done
+        
+        PagingResult<Account> result = accountService.searchIncomeAccounts(paging);
+        PagingResult<AccountDTO> dtoResult = new PagingResult<>();
+        
+        // Convert the data to DTOs
+        List<AccountDTO> dtoList = result.getData().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        
+        // Copy pagination metadata
+        dtoResult.setData(dtoList);
+        dtoResult.setTotalRecords(result.getTotalRecords());
+        dtoResult.setTotalDisplayRecords(result.getTotalDisplayRecords());
+        dtoResult.setPage(result.getPage());
+        dtoResult.setTotalPages(result.getTotalPages());
+        dtoResult.setStart(result.getStart());
+        dtoResult.setEnd(result.getEnd());
+        dtoResult.setSort(result.getSort());
+        
+        return dtoResult;
+    }
+    
+    @GetMapping("/search-expense-accounts")    
+    public PagingResult<AccountDTO> searchExpenseAccounts(            
+            @Parameter(description = "Search filter text") @RequestParam(required = false) String filter,
+            @Parameter(description = "Page number (1-based)") @RequestParam(required = false, defaultValue = "1") Integer page,
+            @Parameter(description = "Number of items per page") @RequestParam(required = false, defaultValue = "100") Integer pageSize,
+            @Parameter(description = "Sort column (id, code, name, level, type, category, currency, createdAt, updatedAt)") @RequestParam(required = false) String sortCol,
+            @Parameter(description = "Sort direction (asc or desc)") @RequestParam(required = false, defaultValue = "asc") String sortDir) {
+        
+        Paging paging = new Paging();
+        // Normalize filter value - trim whitespace and convert empty string to null
+        paging.setFilter(filter != null ? filter.trim() : null);
+        paging.setPage(page);
+        paging.setPageSize(pageSize);
+        
+        // Only set sort if both column and direction are provided and valid
+        if (sortCol != null && !sortCol.isEmpty() && sortDir != null && !sortDir.isEmpty()) {
+            // Convert sort column to lowercase to match entity field names
+            String normalizedSortCol = sortCol.toLowerCase();
+            if (VALID_SORT_COLUMNS.contains(normalizedSortCol)) {
+                paging.setSortCol(normalizedSortCol);
+                paging.setSortDir(sortDir.toLowerCase());
+            }
+        }
+        
+        paging.setValidCols(VALID_SORT_COLUMNS);
+        paging.validateSort();
+        paging.init(); // Ensure calculation is done
+        
+        PagingResult<Account> result = accountService.searchExpenseAccounts(paging);
+        PagingResult<AccountDTO> dtoResult = new PagingResult<>();
+        
+        // Convert the data to DTOs
+        List<AccountDTO> dtoList = result.getData().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        
+        // Copy pagination metadata
+        dtoResult.setData(dtoList);
+        dtoResult.setTotalRecords(result.getTotalRecords());
+        dtoResult.setTotalDisplayRecords(result.getTotalDisplayRecords());
+        dtoResult.setPage(result.getPage());
+        dtoResult.setTotalPages(result.getTotalPages());
+        dtoResult.setStart(result.getStart());
+        dtoResult.setEnd(result.getEnd());
+        dtoResult.setSort(result.getSort());
+        
+        return dtoResult;
+    }
 
     private AccountDTO convertToDTO(Account account) {
         AccountDTO dto = new AccountDTO();

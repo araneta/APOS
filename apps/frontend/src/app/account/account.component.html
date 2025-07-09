@@ -81,12 +81,17 @@
   </ul>
   <div class="tab-content" id="pills-tabContent">
     <div class="tab-pane fade show active" id="pills-cash-account" role="tabpanel" aria-labelledby="pills-cash-account-tab">
-        <app-simple-table [getColumnDefs]="getColumnDefs" (getRows)="loadDataCashAccounts($event)" [sortName]="'id'" [sortOrder]="'asc'"
-          [showNo]="true" [entities]="cashAccounts"></app-simple-table>
+        <app-account-cash-tab></app-account-cash-tab>
     </div>
-    <div class="tab-pane fade" id="pills-inventory-account" role="tabpanel" aria-labelledby="pills-inventory-account-tab">...</div>
-    <div class="tab-pane fade" id="pills-income-account" role="tabpanel" aria-labelledby="pills-income-account-tab">...</div>
-    <div class="tab-pane fade" id="pills-expense-account" role="tabpanel" aria-labelledby="pills-expense-account-tab">...</div>
+    <div class="tab-pane fade" id="pills-inventory-account" role="tabpanel" aria-labelledby="pills-inventory-account-tab">
+      <app-account-inventory-tab></app-account-inventory-tab>
+    </div>
+    <div class="tab-pane fade" id="pills-income-account" role="tabpanel" aria-labelledby="pills-income-account-tab">
+      <app-account-income-tab></app-account-income-tab>
+    </div>
+    <div class="tab-pane fade" id="pills-expense-account" role="tabpanel" aria-labelledby="pills-expense-account-tab">
+      <app-account-expense-tab></app-account-expense-tab>
+    </div>
   </div>
   
 

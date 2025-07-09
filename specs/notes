@@ -10,3 +10,4 @@ Modules:
   Account:
     curl http://localhost:8888/api/accounts/search?filter=&page=1&pageSize=12&sortCol=code&sortDir=asc
 
+npm run generate-api
