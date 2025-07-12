@@ -56,7 +56,7 @@ public class AccountService {
     public PagingResult<Account> searchIncomeAccounts(Paging paging) {
         var parentCashAccount = repository.findByCode("4-0000");
         if(parentCashAccount.isPresent()){
-            return this.searchAccountsByParentID(parentCashAccount.get().getId(), paging);
+            return repository.searchRecursiveAccountsByParentID(parentCashAccount.get().getId(), paging);
         }
         PagingResult<Account> result = new PagingResult<>();
         return result;
@@ -65,7 +65,7 @@ public class AccountService {
     public PagingResult<Account> searchExpenseAccounts(Paging paging) {
         var parentCashAccount = repository.findByCode("6-0000");
         if(parentCashAccount.isPresent()){
-            return this.searchAccountsByParentID(parentCashAccount.get().getId(), paging);
+            return repository.searchRecursiveAccountsByParentID(parentCashAccount.get().getId(), paging);
         }
         PagingResult<Account> result = new PagingResult<>();
         return result;

@@ -13,9 +13,12 @@ import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 @Repository
@@ -165,4 +168,85 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom {
         
         return result;
     }
+    
+    
+    @Override
+    public PagingResult<Account> searchRecursiveAccountsByParentID(long parentID, Paging paging) {
+        // To collect all matched accounts from all levels
+        List<Account> allMatchedAccounts = new ArrayList<>();
+        Set<Long> visitedParentIds = new HashSet<>();
+        Queue<Long> queue = new LinkedList<>();
+        queue.add(parentID);
+
+        // Filter and sort variables
+        String likeFilter = null;
+        if (paging.getFilter() != null && !paging.getFilter().trim().isEmpty()) {
+            likeFilter = "%" + paging.getFilter().toLowerCase() + "%";
+        }
+
+        // Recursive search using BFS-like queue
+        while (!queue.isEmpty()) {
+            Long currentParentId = queue.poll();
+            if (visitedParentIds.contains(currentParentId)) continue;
+            visitedParentIds.add(currentParentId);
+
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Account> query = cb.createQuery(Account.class);
+            Root<Account> root = query.from(Account.class);
+
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("parent").get("id"), currentParentId));
+
+            if (likeFilter != null) {
+                predicates.add(cb.or(
+                    cb.like(cb.lower(root.get("code")), likeFilter),
+                    cb.like(cb.lower(root.get("name")), likeFilter)
+                ));
+            }
+
+            query.where(predicates.toArray(new Predicate[0]));
+
+            // Apply sorting
+            List<Order> orders = new ArrayList<>();
+            if (!paging.getSort().isEmpty()) {
+                for (Map.Entry<String, String> entry : paging.getSort().entrySet()) {
+                    if ("asc".equalsIgnoreCase(entry.getValue())) {
+                        orders.add(cb.asc(root.get(entry.getKey())));
+                    } else {
+                        orders.add(cb.desc(root.get(entry.getKey())));
+                    }
+                }
+            }
+            if (orders.isEmpty()) {
+                orders.add(cb.asc(root.get("code")));
+            }
+            query.orderBy(orders);
+
+            List<Account> children = entityManager.createQuery(query).getResultList();
+
+            allMatchedAccounts.addAll(children);
+
+            // Add child IDs to queue for next level search
+            for (Account account : children) {
+                queue.add(account.getId());
+            }
+        }
+
+        // Manual pagination
+        int total = allMatchedAccounts.size();
+        int fromIndex = paging.getStart();
+        int toIndex = Math.min(fromIndex + paging.getPageSize(), total);
+
+        List<Account> pagedAccounts = total > 0 && fromIndex < total
+            ? allMatchedAccounts.subList(fromIndex, toIndex)
+            : Collections.emptyList();
+
+        // Prepare result
+        PagingResult<Account> result = new PagingResult<>();
+        result.setData(pagedAccounts);
+        result.setTotalRecords(total);
+        result.calculate(paging);
+        return result;
+    }
+
 } 

@@ -32,11 +32,21 @@ Biaya → accounts for operating costs or expenses
 Daftar tab 
 
 Akun kas : statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('1-1100')) ORDER BY kodeacc 
-
-Akun persediaan: SELECT * FROM tbl_perkiraan WHERE parentacc = (('1-2000')) ORDER BY kodeacc 
-
-Akun pendapatan: statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('4-2000')) ORDER BY kodeacc 
-
-Akun biaya: statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('6-9001')) ORDER BY kodeacc 
-
-Semua akun: SELECT * FROM tbl_perkiraan WHERE parentacc IN ('1-1100', '1-2000') OR kelompok IN ('4','6') ORDER BY kodeacc 
+Cash account pendapatan: recursive
+3:10:36 ICT LOG:  statement: SELECT * FROM tbl_perkiraan WHERE parentacc IS NULL AND kelompok = (('4'))
+2025-07-09 03:10:36 ICT LOG:  duration: 0.269 ms
+2025-07-09 03:10:36 ICT LOG:  statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('4-0000')) ORDER BY kodeacc
+2025-07-09 03:10:36 ICT LOG:  duration: 0.231 ms
+2025-07-09 03:10:36 ICT LOG:  statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('4-1000')) ORDER BY kodeacc
+2025-07-09 03:10:36 ICT LOG:  duration: 0.213 ms
+2025-07-09 03:10:36 ICT LOG:  statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('4-1100')) ORDER BY kodeacc
+2025-07-09 03:10:36 ICT LOG:  duration: 0.228 ms
+2025-07-09 03:10:36 ICT LOG:  statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('4-1101')) ORDER BY kodeacc
+2025-07-09 03:10:36 ICT LOG:  duration: 0.194 ms
+2025-07-09 03:10:36 ICT LOG:  statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('4-1500')) ORDER BY kodeacc
+2025-07-09 03:10:36 ICT LOG:  duration: 0.178 ms
+2025-07-09 03:10:36 ICT LOG:  statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('4-1600')) ORDER BY kodeacc
+2025-07-09 03:10:36 ICT LOG:  duration: 0.186 ms
+2025-07-09 03:10:36 ICT LOG:  statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('4-1700')) ORDER BY kodeacc
+2025-07-09 03:10:36 ICT LOG:  duration: 0.171 ms
+2025-07-09 03:10:36 ICT LOG:  statement: SELECT * FROM tbl_perkiraan WHERE parentacc = (('4-2000')) ORDER BY kodeacc
