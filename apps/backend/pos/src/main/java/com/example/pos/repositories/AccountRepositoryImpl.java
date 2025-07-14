@@ -171,9 +171,13 @@ public class AccountRepositoryImpl implements AccountRepositoryCustom {
     
     
     @Override
-    public PagingResult<Account> searchRecursiveAccountsByParentID(long parentID, Paging paging) {
+    public PagingResult<Account> searchRecursiveAccountsByParent(Account parent, Paging paging){
         // To collect all matched accounts from all levels
         List<Account> allMatchedAccounts = new ArrayList<>();
+        long parentID = parent.getId();
+        //also add the parent
+        allMatchedAccounts.add(parent);
+        
         Set<Long> visitedParentIds = new HashSet<>();
         Queue<Long> queue = new LinkedList<>();
         queue.add(parentID);

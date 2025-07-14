@@ -10,5 +10,5 @@ public interface AccountRepositoryCustom {
     PagingResult<Account> searchAccounts(Paging paging);
     
     PagingResult<Account> searchAccountsByParentID(long parentID, Paging paging);
-    PagingResult<Account> searchRecursiveAccountsByParentID(long parentID, Paging paging);
+    PagingResult<Account> searchRecursiveAccountsByParent(Account parent, Paging paging);
 } 
