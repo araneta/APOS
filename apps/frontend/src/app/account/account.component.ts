@@ -10,13 +10,16 @@ import {AccountCashTabComponent} from '../components/account-cash-tab/account-ca
 import { AccountInventoryTabComponent } from '../components/acoount-inventory-tab/account-inventory-tab.component';
 import { AccountIncomeTabComponent } from '../components/account-income-tab/account-income-tab.component';
 import { AccountExpenseTabComponent } from '../components/account-expense-tab/account-expense-tab.component';
+import {TreeGridComponent} from '../components/tree-grid/tree-grid.component';
 
 @Component({
   selector: 'app-account',
   standalone: true,
   imports: [ReactiveFormsModule,CommonModule, SimpleTableComponent, 
     AccountCashTabComponent, AccountInventoryTabComponent, 
-    AccountIncomeTabComponent,AccountExpenseTabComponent],
+    AccountIncomeTabComponent,AccountExpenseTabComponent,
+    TreeGridComponent
+    ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
 })
