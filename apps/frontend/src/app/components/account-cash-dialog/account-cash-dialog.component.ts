@@ -3,6 +3,7 @@ import { Modal } from 'bootstrap';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AccountManagementService } from '../../api/api/accountManagement.service';
 import { AccountEntryForm } from '../../api/model/accountEntryForm';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'account-cash-dialog',
@@ -20,7 +21,7 @@ export class AccountCashDialogComponent implements  OnInit,AfterViewInit{
   }
   
 
-  constructor(private fb: FormBuilder, private accountManagementService: AccountManagementService) {}
+  constructor(private fb: FormBuilder, private accountManagementService: AccountManagementService,private toastr: ToastrService) {}
 
   ngOnInit(): void {
         this.akunForm = this.fb.group({
@@ -57,11 +58,13 @@ export class AccountCashDialogComponent implements  OnInit,AfterViewInit{
         };
         this.accountManagementService.createAccount(accountEntryForm).subscribe({
           next: (response) => {
-            console.log('Account created successfully:', response);
+            console.log('Account created successfully', response);
+            this.toastr.success('Account created successfully', 'Success');
             this.close();
           },
-          error: (error) => {
-            console.error('Error creating account:', error);
+          error: (error:any) => {
+            console.error('Error creating account:', error.statusText);
+            this.toastr.error('Error creating account:'+error.statusText, 'Error');
           }
         });
     }

@@ -47,8 +47,8 @@ export class AccountCashTabComponent implements OnInit {
         { headerName: 'Name', field: 'name' },
         { headerName: 'Category', field: 'category' },
         { headerName: 'Currency', field: 'currency' },
-        { headerName: 'Cash/Bank', field: 'isCashBank' },
-        { headerName: 'Active', field: 'isActive' },
+        { headerName: 'Cash/Bank', field: 'cashBank' },
+        { headerName: 'Active', field: 'active' },
         {
         headerName: 'Actions',
         cellRenderer: (params: any) => {
