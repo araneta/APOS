@@ -1,4 +1,5 @@
 export * from './accountDTO';
+export * from './accountEntryForm';
 export * from './loginRequest';
 export * from './officeConfig';
 export * from './pagingResultAccountDTO';

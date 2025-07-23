@@ -16,6 +16,7 @@ encoder.ts
 git_push.sh
 index.ts
 model/accountDTO.ts
+model/accountEntryForm.ts
 model/loginRequest.ts
 model/models.ts
 model/officeConfig.ts

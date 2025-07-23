@@ -3,14 +3,15 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { AccountDTO } from "../../api/model/accountDTO";
 import { ToastrService } from "ngx-toastr";
 import { AccountManagementService } from "../../api/api/accountManagement.service";
-import { SimpleTableComponent } from "../simple-table/simple-table.component";
+//import { SimpleTableComponent } from "../simple-table/simple-table.component";
+import { SimpleTreeComponent } from "../simple-tree/simple-tree.component";
 import { CommonModule } from '@angular/common';
 import { PagingResultAccountDTO } from '../../api/model/pagingResultAccountDTO';
 
 @Component({
   selector: 'app-account-income-tab',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SimpleTableComponent],           
+  imports: [CommonModule, ReactiveFormsModule, SimpleTreeComponent],           
     templateUrl: './account-income-tab.component.html',           
     //styleUrls: ['./account-Income-tab.component.scss']
 })

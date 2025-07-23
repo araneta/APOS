@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { AccountDTO } from "../../api/model/accountDTO";
 import { ToastrService } from "ngx-toastr";
@@ -6,11 +6,12 @@ import { AccountManagementService } from "../../api/api/accountManagement.servic
 import { SimpleTableComponent } from "../simple-table/simple-table.component";
 import { CommonModule } from '@angular/common';
 import { PagingResultAccountDTO } from '../../api/model/pagingResultAccountDTO';
+import {AccountCashDialogComponent} from "../account-cash-dialog/account-cash-dialog.component";
 
 @Component({
   selector: 'app-account-cash-tab',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, SimpleTableComponent],           
+  imports: [CommonModule, ReactiveFormsModule, SimpleTableComponent, AccountCashDialogComponent],           
     templateUrl: './account-cash-tab.component.html',           
     //styleUrls: ['./account-cash-tab.component.scss']
 })
@@ -28,7 +29,9 @@ export class AccountCashTabComponent implements OnInit {
     sizePerPage = 10;
     sortName = '';
     sortOrder = 'asc';
-    
+    @ViewChild('modalRef') modalComponent!: AccountCashDialogComponent;
+
+  
     constructor(
         private accountManagementService: AccountManagementService,
         private fb: FormBuilder,
@@ -102,5 +105,7 @@ export class AccountCashTabComponent implements OnInit {
         });
       }
 
-
+    showModal() {
+      this.modalComponent.open();
+    }
 }

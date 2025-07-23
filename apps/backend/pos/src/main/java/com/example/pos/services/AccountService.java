@@ -4,9 +4,12 @@
  */
 package com.example.pos.services;
 
+import com.example.pos.dto.AccountEntryForm;
 import com.example.pos.dto.Paging;
 import com.example.pos.dto.PagingResult;
 import com.example.pos.entities.Account;
+import com.example.pos.entities.AccountCategory;
+import com.example.pos.entities.AccountType;
 import com.example.pos.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -75,5 +78,27 @@ public class AccountService {
         return repository.searchAccountsByParentID(parentID, paging);
     }
     
+    public Account createAccount(AccountEntryForm form){
+        var parentCashAccount = repository.findByCode(form.getParentAccount());
+        if(!parentCashAccount.isPresent()){
+            throw new ServiceException("Parent code not found", 0);
+        }
+        
+        Account account = new Account();
+        account.setActive(true);
+        account.setCashBank(form.isIsCashBank());
+        
+        AccountCategory category = AccountCategory.valueOf(form.getAccountCategory());
+        account.setCategory(category);
+        
+        account.setCode(form.getCode());
+        //account.setCurrency(currency);
+        account.setName(form.getName());
+        account.setParent(parentCashAccount.get());
+        
+        AccountType type = AccountType.valueOf(form.getAccountType());
+        account.setType(type);
+        return repository.save(account);
+    }
     
 }

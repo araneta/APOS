@@ -1,2 +1,8 @@
+<!-- Trigger Button -->
+<button class="btn btn-success" (click)="showModal()">Tambah</button>
+
+<!-- Include Modal Component -->
+<account-cash-dialog #modalRef></account-cash-dialog>
+
 <app-simple-table [getColumnDefs]="getColumnDefs" (getRows)="loadDataCashAccounts($event)" [sortName]="'id'" [sortOrder]="'asc'"
           [showNo]="true" [entities]="cashAccounts"></app-simple-table>

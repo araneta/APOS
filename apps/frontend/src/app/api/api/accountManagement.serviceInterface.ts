@@ -12,6 +12,7 @@ import { HttpHeaders }                                       from '@angular/comm
 import { Observable }                                        from 'rxjs';
 
 import { AccountDTO } from '../model/models';
+import { AccountEntryForm } from '../model/models';
 import { PagingResultAccountDTO } from '../model/models';
 
 
@@ -22,6 +23,13 @@ import { Configuration }                                     from '../configurat
 export interface AccountManagementServiceInterface {
     defaultHeaders: HttpHeaders;
     configuration: Configuration;
+
+    /**
+     * 
+     * 
+     * @param accountEntryForm 
+     */
+    createAccount(accountEntryForm: AccountEntryForm, extraHttpRequestParams?: any): Observable<object>;
 
     /**
      * Get all accounts

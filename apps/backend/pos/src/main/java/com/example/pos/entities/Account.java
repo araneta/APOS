@@ -9,6 +9,7 @@ package com.example.pos.entities;
  * @author araneta
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import lombok.*;
@@ -37,6 +38,7 @@ public class Account {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
+    @JsonIgnore
     private Account parent;
 
     @Column(nullable = false)
