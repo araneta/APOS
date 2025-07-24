@@ -59,18 +59,18 @@
       </div>
 
       <!-- Main Content -->
-      <div class="col">
+      <div class="col bg-white rounded shadow-sm p-4">
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
           <!-- Sidenav Toggle Button -->
           <button class="btn btn-link d-lg-none me-3" *ngIf="authService.isAuthenticated()" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
             <i class="bi bi-list fs-4"></i>
           </button>
-          
+
           <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
             <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
             <span class="fs-4">Point of Sales</span>
           </a>
-      
+
           <ul class="nav nav-pills">
             <li class="nav-item"><a href="/" class="nav-link" [class.active]="!authService.isAuthenticated()">Home</a></li>
             <ng-container *ngIf="!authService.isAuthenticated()">
@@ -86,7 +86,8 @@
             <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
           </ul>
         </header>
-        <router-outlet />
+
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>
