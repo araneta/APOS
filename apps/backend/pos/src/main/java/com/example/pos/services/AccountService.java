@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -101,4 +102,34 @@ public class AccountService {
         return repository.save(account);
     }
     
+    
+    public Optional<Account> find(long id){
+        return this.repository.findById(id);
+    }
+    
+    public Account updateAccount(long id, AccountEntryForm form){
+        var parentCashAccount = repository.findByCode(form.getParentAccount());
+        if(!parentCashAccount.isPresent()){
+            throw new ServiceException("Parent code not found", 0);
+        }
+        var existing = find(id);
+        if(!existing.isPresent()){
+            throw new ServiceException("item not found", 0);
+        }
+        Account account = existing.get();
+        
+        account.setCashBank(form.isIsCashBank());
+        
+        AccountCategory category = AccountCategory.valueOf(form.getAccountCategory());
+        account.setCategory(category);
+        
+        account.setCode(form.getCode());
+        //account.setCurrency(currency);
+        account.setName(form.getName());
+        account.setParent(parentCashAccount.get());
+        
+        AccountType type = AccountType.valueOf(form.getAccountType());
+        account.setType(type);
+        return repository.save(account);
+    }
 }

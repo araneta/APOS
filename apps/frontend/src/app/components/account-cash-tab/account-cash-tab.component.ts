@@ -16,9 +16,7 @@ import {AccountCashDialogComponent} from "../account-cash-dialog/account-cash-di
     //styleUrls: ['./account-cash-tab.component.scss']
 })
 export class AccountCashTabComponent implements OnInit {
-    cashAccounts: AccountDTO[] = [];
-    
-    
+    cashAccounts: AccountDTO[] = [];    
     selectedAccount?: AccountDTO;
     
     isEditMode = false;
@@ -41,6 +39,7 @@ export class AccountCashTabComponent implements OnInit {
     }
     ngOnInit(): void {
         //this.loadDataCashAccounts();
+        
     }
     getColumnDefs = () => [
         { headerName: 'Code', field: 'code' },
@@ -57,12 +56,15 @@ export class AccountCashTabComponent implements OnInit {
             button.classList.add('btn', 'btn-sm', 'btn-primary');
             button.addEventListener('click', () => {
             //this.selectAccount(params.data);
-            console.log('edit',params.data);
+              console.log('edit',params.data);
+              this.modalComponent.edit(params.data.id, params.data.code, params.data.name);
+              
             });
             return button;
         }
         }
     ];
+
     public loadDataCashAccounts = (state: any) => {
         console.log('Request state:', {
           currentPage: state.currentPage,
@@ -108,4 +110,18 @@ export class AccountCashTabComponent implements OnInit {
     showModal() {
       this.modalComponent.open();
     }
+
+    handleModalClose(updated: boolean) {
+      if (updated) {
+        // Reload data if the modal was closed with an update
+        this.loadDataCashAccounts({
+          currentPage: this.currentPage,
+          sizePerPage: this.sizePerPage,
+          sortName: this.sortName,
+          sortOrder: this.sortOrder,
+          searchText: ''
+        });
+      }
+    }
+
 }

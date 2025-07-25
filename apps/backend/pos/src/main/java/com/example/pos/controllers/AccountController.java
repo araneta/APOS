@@ -6,6 +6,7 @@ package com.example.pos.controllers;
 
 import com.example.pos.dto.AccountDTO;
 import com.example.pos.dto.AccountEntryForm;
+import com.example.pos.dto.ApiError;
 import com.example.pos.dto.BaseResponse;
 import com.example.pos.dto.Paging;
 import com.example.pos.dto.PagingResult;
@@ -23,7 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -345,5 +348,15 @@ public class AccountController {
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
         
     }
-            
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<? extends Object> updateAccount(@PathVariable long id, @Valid @RequestBody AccountEntryForm form){        
+        var data = accountService.updateAccount(id, form);
+        BaseResponse response = new BaseResponse();
+        response.setMessage("Success");
+        response.setStatus("Success");
+        //response.setTime(TimeHelper.getCurrentTimeYYYYMMDDHHmmss());
+        response.setData(data);
+        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
+    }
 }

@@ -92,4 +92,12 @@ export interface AccountManagementServiceInterface {
      */
     searchInventoryAccounts(filter?: string, page?: number, pageSize?: number, sortCol?: string, sortDir?: string, extraHttpRequestParams?: any): Observable<PagingResultAccountDTO>;
 
+    /**
+     * 
+     * 
+     * @param id 
+     * @param accountEntryForm 
+     */
+    updateAccount(id: number, accountEntryForm: AccountEntryForm, extraHttpRequestParams?: any): Observable<object>;
+
 }

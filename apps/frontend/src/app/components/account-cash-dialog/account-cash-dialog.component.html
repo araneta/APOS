@@ -4,11 +4,18 @@
     <div class="modal-content">
 
       <div class="modal-header">
-        <h5 class="modal-title">My Modal</h5>
+        <h5 class="modal-title">Cash Account Form</h5>
         <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
       </div>
 
       <div class="modal-body">
+        <!-- Alert Box -->
+        <div *ngIf="formAlert" class="alert" [ngClass]="{
+            'alert-success': formAlert.type === 'success',
+            'alert-danger': formAlert.type === 'error'
+        }" role="alert">
+            {{ formAlert.message }}
+        </div>
         <form [formGroup]="akunForm" (ngSubmit)="submitForm()" class="form-horizontal">
 
             <!-- Account Type -->
@@ -75,13 +82,7 @@
                 </div>
             </div>
 
-            <!-- Buttons -->
-            <div class="form-group row mb-3">
-                <div class="offset-sm-2 col-sm-10">
-                
-                <button type="button" class="btn btn-secondary">Batal</button>
-                </div>
-            </div>
+            
 
             </form>
 
@@ -91,11 +92,11 @@
         <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
         <button
             type="button"
-            class="btn btn-warning me-2"
+            class="btn btn-success me-2"
             [disabled]="akunForm.invalid"
             (click)="submitForm()"  
         >
-            <i class="bi bi-save"></i> Simpan
+            <i class="bi bi-save"></i> Save
         </button>
       </div>
 
