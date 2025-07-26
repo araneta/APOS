@@ -206,4 +206,10 @@ export class SimpleTableComponent implements AfterViewInit, OnDestroy {
     }
     return pages;
   }
+
+  refresh() {
+    
+    this.currentPage = 1;
+    this.getRows.emit(this.getState());
+  }
 }

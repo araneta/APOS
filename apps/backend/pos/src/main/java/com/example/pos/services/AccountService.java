@@ -132,4 +132,18 @@ public class AccountService {
         account.setType(type);
         return repository.save(account);
     }
+    
+    public boolean deleteAccount(long id){
+        var existing = find(id);
+        if(!existing.isPresent()){
+            throw new ServiceException("item not found", 0);
+        }
+        var parent = repository.findByParentId(id);
+        if(!parent.isEmpty()){
+            throw new ServiceException("item is in use", 0);
+        }
+        repository.delete(existing.get());
+        return true;
+    }
+            
 }

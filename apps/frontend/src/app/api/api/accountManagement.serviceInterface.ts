@@ -32,6 +32,13 @@ export interface AccountManagementServiceInterface {
     createAccount(accountEntryForm: AccountEntryForm, extraHttpRequestParams?: any): Observable<object>;
 
     /**
+     * 
+     * 
+     * @param id 
+     */
+    deleteAccount(id: number, extraHttpRequestParams?: any): Observable<object>;
+
+    /**
      * Get all accounts
      * Retrieves a list of all accounts in the system
      */
