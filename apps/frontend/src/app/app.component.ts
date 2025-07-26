@@ -14,15 +14,48 @@ import { LoadingService } from './loading.service';
 export class AppComponent {
   title = 'my-angular-project';
   isLoading = true;
+  progress = 0;
+  private progressInterval: any;
 
   constructor(public authService: AuthService, private loadingService: LoadingService) {
-    this.loadingService.loading$.subscribe((state) => {
-      console.log('Loading state changed:', state);
-      this.isLoading = state;
+    this.loadingService.loading$.subscribe((loading) => {
+      this.isLoading = loading;
+
+      if (loading) {
+        this.startProgress();
+      } else {
+        this.completeProgress();
+      }
     });
   }
 
   setLoading(state: boolean) {
     this.isLoading = state;
   }
+  startProgress(): void {
+    this.progress = 0;
+
+    this.progressInterval = setInterval(() => {
+      if (this.progress < 95) {
+        this.progress += 5;
+      }
+    }, 100);
+  }
+
+  completeProgress(): void {
+    clearInterval(this.progressInterval);
+
+    const completeInterval = setInterval(() => {
+      if (this.progress < 100) {
+        this.progress += 5;
+      } else {
+        clearInterval(completeInterval);
+        // Hide bar after short delay
+        setTimeout(() => {
+          this.progress = 0;
+        }, 300);
+      }
+    }, 30);
+  }
+
 }

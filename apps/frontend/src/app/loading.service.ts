@@ -17,7 +17,7 @@ export class LoadingService {
   /**
    * Automatically hide after a delay (defaults to 2000ms)
    */
-  hideAfter(delay: number = 2000): void {
+  hideAfter(delay: number = 1000): void {
     setTimeout(() => this.hide(), delay);
   }
 

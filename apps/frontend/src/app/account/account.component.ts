@@ -11,6 +11,7 @@ import { AccountInventoryTabComponent } from '../components/acoount-inventory-ta
 import { AccountIncomeTabComponent } from '../components/account-income-tab/account-income-tab.component';
 import { AccountExpenseTabComponent } from '../components/account-expense-tab/account-expense-tab.component';
 import {TreeGridComponent} from '../components/tree-grid/tree-grid.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-account',
@@ -45,7 +46,8 @@ export class AccountComponent implements OnInit {
   constructor(
     private accountManagementService: AccountManagementService,
     private fb: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private titleService: Title
   ) { 
     this.accountForm = this.fb.group({
       id: [null],
@@ -169,6 +171,8 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Accounts Management');
+
     // Data will be loaded when the grid is ready
   }
 

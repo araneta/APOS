@@ -1,6 +1,13 @@
 <main>
-  <div *ngIf="isLoading" class="progress fixed-top" style="height: 5px; z-index: 9999;">
-    <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width: 100%"></div>
+  <div *ngIf="isLoading" class="progress fixed-top" style="height: 5px;">
+    <div
+      class="progress-bar progress-bar-striped progress-bar-animated"
+      [style.width.%]="progress"
+      role="progressbar"
+      [attr.aria-valuenow]="progress"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    ></div>
   </div>
   <div class="container-fluid">
     <div class="row">
