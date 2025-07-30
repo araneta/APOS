@@ -1,0 +1,109 @@
+<div #tableContainer style="width: 100%; min-height: 400px;">
+  <div class="row mb-2">
+    <div class="col-lg-8"></div>
+    <div class="col-lg-4">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Search"
+        (input)="onSearchChange($event)"
+      />
+    </div>
+  </div>
+
+  <div class="ag-theme-alpine mb-3" style="width: 100%;" #agGrid>
+    <ag-grid-angular
+      [columnDefs]="columnDefs"
+      [rowData]="entities"
+      [defaultColDef]="{ sortable: true, resizable: true }"
+      [paginationPageSize]="sizePerPage"
+      [rowSelection]="'single'"
+      domLayout="autoHeight"
+      (gridReady)="onGridReady($event)"
+      (sortChanged)="handleSortChanged($event)"
+      [enableCellTextSelection]="true"
+      [ensureDomOrder]="true"
+    ></ag-grid-angular>
+
+    <app-custom-context-menu
+      *ngIf="contextMenu"
+      [position]="contextMenu.position"
+      [rowData]="contextMenu.rowData"
+      [menuItems]="contextMenu.menuItems"
+      (close)="contextMenu = null"
+    ></app-custom-context-menu>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="pagination-info">
+        Showing {{ (currentPage - 1) * sizePerPage + 1 }} to
+        {{ Math.min(currentPage * sizePerPage, totalDataSize) }} of
+        {{ totalDataSize }} entries
+      </div>
+      <div class="btn-group mt-2">
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle btn-sm"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {{ sizePerPage }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button
+              *ngFor="let size of [5, 10, 20, 100, 200]"
+              class="dropdown-item"
+              (click)="onSizePerPageList(size)"
+            >
+              {{ size }}
+            </button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="col-md-6">
+      <ul class="pagination float-end">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="currentPage > 1 && handlePageChange(1)">&laquo;</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="currentPage > 1 && handlePageChange(currentPage - 1)">&lsaquo;</a>
+        </li>
+        <li class="page-item" *ngIf="visiblePages[0] > 1">
+          <a class="page-link" (click)="handlePageChange(1)">1</a>
+        </li>
+        <li class="page-item disabled" *ngIf="visiblePages[0] > 2">
+          <span class="page-link">...</span>
+        </li>
+        <li
+          *ngFor="let page of visiblePages"
+          class="page-item"
+          [class.active]="page === currentPage"
+        >
+          <a class="page-link" (click)="handlePageChange(page)">
+            {{ page }}
+          </a>
+        </li>
+        <li class="page-item disabled" *ngIf="visiblePages[visiblePages.length - 1] < totalPages - 1">
+          <span class="page-link">...</span>
+        </li>
+        <li class="page-item" *ngIf="visiblePages[visiblePages.length - 1] < totalPages">
+          <a class="page-link" (click)="handlePageChange(totalPages)">{{ totalPages }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="currentPage < totalPages && handlePageChange(currentPage + 1)">&rsaquo;</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="currentPage < totalPages && handlePageChange(totalPages)">&raquo;</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  
+</div>

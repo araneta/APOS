@@ -1,0 +1,45 @@
+<div class="container mt-4">
+  <h2>Accounts Management</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  
+  
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="pills-cash-account-tab" data-bs-toggle="pill" data-bs-target="#pills-cash-account"
+        type="button" role="tab" aria-controls="pills-cash-account" aria-selected="true">Cash Account</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-inventory-account-tab" data-bs-toggle="pill" data-bs-target="#pills-inventory-account"
+        type="button" role="tab" aria-controls="pills-inventory-account" aria-selected="false">Inventory Account</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-income-account-tab" data-bs-toggle="pill" data-bs-target="#pills-income-account"
+        type="button" role="tab" aria-controls="pills-income-account" aria-selected="false">Revenue / Income Account</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-expense-account-tab" data-bs-toggle="pill" data-bs-target="#pills-expense-account"
+        type="button" role="tab" aria-controls="pills-expense-account" aria-selected="false">Expense Account</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-cash-account" role="tabpanel" aria-labelledby="pills-cash-account-tab">
+        <app-account-cash-tab></app-account-cash-tab>
+    </div>
+    <div class="tab-pane fade" id="pills-inventory-account" role="tabpanel" aria-labelledby="pills-inventory-account-tab">
+      <app-account-inventory-tab></app-account-inventory-tab>
+    </div>
+    <div class="tab-pane fade" id="pills-income-account" role="tabpanel" aria-labelledby="pills-income-account-tab">
+      <app-account-income-tab></app-account-income-tab>
+    </div>
+    <div class="tab-pane fade" id="pills-expense-account" role="tabpanel" aria-labelledby="pills-expense-account-tab">
+      <app-account-expense-tab></app-account-expense-tab>
+    </div>
+  </div>
+  
+  <app-tree-grid></app-tree-grid>
+
+  <div *ngIf="loading" class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>

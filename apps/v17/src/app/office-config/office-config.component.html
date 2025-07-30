@@ -1,0 +1,60 @@
+<div class="container mt-4">
+    <h2>Setup Office Configuration</h2>
+    <form (ngSubmit)="save()">
+      <div class="mb-3">
+        <label class="form-label">Kode Kantor Pusat</label>
+        <input [(ngModel)]="config.headOfficeCode" name="headOfficeCode" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Nama Kantor</label>
+        <input [(ngModel)]="config.officeName" name="officeName" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Zona Waktu</label>
+        <input [(ngModel)]="config.timezone" name="timezone" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Periode Awal</label>
+        <div class="row">
+          <div class="col">
+            <select [(ngModel)]="config.startMonth" name="startMonth" class="form-control">
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+          <div class="col">
+            <input type="number" [(ngModel)]="config.startYear" name="startYear" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Periode Akhir</label>
+        <select [(ngModel)]="config.endMonth" name="endMonth" class="form-control">
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit">Simpan</button>
+    </form>
+  </div>
+  

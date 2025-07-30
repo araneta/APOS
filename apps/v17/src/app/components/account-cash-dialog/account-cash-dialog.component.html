@@ -1,0 +1,105 @@
+<!-- Modal -->
+<div class="modal fade" #modalElement tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Cash Account Form</h5>
+        <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Alert Box -->
+        <div *ngIf="formAlert" class="alert" [ngClass]="{
+            'alert-success': formAlert.type === 'success',
+            'alert-danger': formAlert.type === 'error'
+        }" role="alert">
+            {{ formAlert.message }}
+        </div>
+        <form [formGroup]="akunForm" (ngSubmit)="submitForm()" class="form-horizontal">
+
+            <!-- Account Type -->
+            <div class="form-group row mb-3">
+                <label class="col-sm-2 col-form-label">Account Type</label>
+                <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" formControlName="accountType" value="H" />
+                    <label class="form-check-label">Header</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" formControlName="accountType" value="D" />
+                    <label class="form-check-label">Detail</label>
+                </div>
+                </div>
+            </div>
+
+            <!-- Kelompok -->
+            <div class="form-group row mb-3">
+                <label class="col-sm-2 col-form-label">Account Category</label>
+                <div class="col-sm-10">
+                <input type="text" class="form-control" formControlName="accountCategory" readonly />
+                </div>
+            </div>
+
+            <!-- Posisi Dibawah -->
+            <div class="form-group row mb-3">
+                <label class="col-sm-2 col-form-label">Parent</label>
+                <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="text" class="form-control" formControlName="parentAccount" readonly />
+                    <span class="input-group-text">KAS BANK</span>
+                </div>
+                </div>
+            </div>
+
+            <!-- Kode Perkiraan -->
+            <div class="form-group row mb-3">
+                <label class="col-sm-2 col-form-label">Kode Perkiraan</label>
+                <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="text" class="form-control" formControlName="codePrefix" readonly style="max-width: 60px;" />
+                    <span class="input-group-text">-</span>
+                    <input type="text" class="form-control" formControlName="code" />
+                </div>
+                </div>
+            </div>
+
+            <!-- Nama -->
+            <div class="form-group row mb-3">
+                <label class="col-sm-2 col-form-label">Nama</label>
+                <div class="col-sm-10">
+                <input type="text" class="form-control" formControlName="name" />
+                </div>
+            </div>
+
+            <!-- Kas/Bank -->
+            <div class="form-group row mb-3">
+                <div class="offset-sm-2 col-sm-10">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" formControlName="isCashBank" />
+                    <label class="form-check-label">Kas / Bank</label>
+                </div>
+                </div>
+            </div>
+
+            
+
+            </form>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+        <button
+            type="button"
+            class="btn btn-success me-2"
+            [disabled]="akunForm.invalid"
+            (click)="submitForm()"  
+        >
+            <i class="bi bi-save"></i> Save
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

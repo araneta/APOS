@@ -1,0 +1,37 @@
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.3.0",
+    "generators": {
+      "v1.0": {
+        "generatorName": "typescript-angular",
+        "output": "src/app/api",
+        "additionalProperties": {
+          "supportsES6": true,
+          "npmName": "@api/api",
+          "npmVersion": "1.0.0",
+          "withInterfaces": true,
+          "responseType": "json",
+          "useSingleRequestParameter": true,
+          "stringEnums": true,
+          "sortParamsByRequiredFlag": true,
+          "sortModelPropertiesByRequiredFlag": true,
+          "ensureUniqueParams": true,
+          "modelPropertyNaming": "camelCase",
+          "enumPropertyNaming": "camelCase",
+          "removeEnumValuePrefix": true,
+          "useTypeScript": true,
+          "legacyDiscriminatorBehavior": false,
+          "useRxJS": true,
+          "useHttpClient": true,
+          "withInterfaces": true,
+          "withSeparateModelsAndApi": true,
+          "modelPackage": "model",
+          "apiPackage": "api"
+        },
+        "inputSpec": "http://localhost:8888/v3/api-docs"
+      }
+    }
+  }
+} 

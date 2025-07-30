@@ -1,0 +1,19 @@
+.offcanvas-body {
+  padding-top: 1rem;
+}
+
+.nav-link {
+  color: #495057;
+  font-weight: 500;
+}
+
+.nav-link.active,
+.nav-link:focus,
+.nav-link:hover {
+  background-color: #e9ecef;
+  color: #212529;
+}
+
+.offcanvas-header {
+  border-bottom: 1px solid #dee2e6;
+}

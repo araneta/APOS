@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-custom-context-menu',
+  selector: 'app-account-dropdown',
   standalone: true,
   imports: [CommonModule], // Import CommonModule here
 
-  templateUrl: './custom-context-menu.component.html',
-  styleUrls: ['./custom-context-menu.component.css']
+  templateUrl: './account-dropdown.component.html',
+  //styleUrls: ['./account-dropdown.component.css']
 })
 export class CustomContextMenuComponent {
   @Input() position: { x: number; y: number } = { x: 0, y: 0 };
