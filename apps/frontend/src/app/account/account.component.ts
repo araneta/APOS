@@ -10,6 +10,7 @@ import {AccountCashTabComponent} from '../components/account-cash-tab/account-ca
 import { AccountInventoryTabComponent } from '../components/acoount-inventory-tab/account-inventory-tab.component';
 import { AccountIncomeTabComponent } from '../components/account-income-tab/account-income-tab.component';
 import { AccountExpenseTabComponent } from '../components/account-expense-tab/account-expense-tab.component';
+import { TabsModule } from 'primeng/tabs';
 
 import { Title } from '@angular/platform-browser';
 
@@ -19,7 +20,7 @@ import { Title } from '@angular/platform-browser';
   imports: [ReactiveFormsModule,CommonModule, SimpleTableComponent, 
     AccountCashTabComponent, AccountInventoryTabComponent, 
     AccountIncomeTabComponent,AccountExpenseTabComponent,
-    
+    TabsModule,
     ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'

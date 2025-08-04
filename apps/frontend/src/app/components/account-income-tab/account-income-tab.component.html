@@ -1,7 +1,12 @@
  <div style="height: 400px;">
-    <app-reusable-tree-grid
+    <tree-grid
         [data]="treeRows"
         [columns]="treeColumns"
+        [showActions]="showActionsColumn"
+        [actionButtons]="actionButtons"
+        [actionsColumnWidth]="200"
+        [actionsColumnHeaderName]="'Operations'"
+        (actionButtonClicked)="onAction($event)"
         [treeColumnHeaderName]="'Code'">
-      </app-reusable-tree-grid>
+      </tree-grid>
  </div>
