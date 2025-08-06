@@ -56,12 +56,13 @@ export class AccountCashDialogComponent implements OnInit, AfterViewInit {
     });
     this.onClose.emit(true); // Or false if no update needed
   }
-  edit(id: number, code: string, name: string) {
+  edit(id: number, codePrefix: string ,code: string, name: string, parentAccount:string) {
     this.id = id; // Set the id for the account being edited
     this.akunForm.patchValue({
       code: code,
       name: name,
-
+      codePrefix: codePrefix,
+      parentAccount: parentAccount,
     });
     this.modalInstance.show();
   }

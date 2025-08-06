@@ -7,14 +7,14 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonModule, NgIf, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'account-inventory-dialog',
-  templateUrl: './account-inventory-dialog.component.html',
+  selector: 'account-income-dialog',
+  templateUrl: './account-income-dialog.component.html',
   standalone: true,
   imports: [ReactiveFormsModule, NgIf,
     NgClass,
     CommonModule,],
 })
-export class AccountInventoryDialogComponent implements OnInit, AfterViewInit {
+export class AccountIncomeDialogComponent implements OnInit, AfterViewInit {
   @ViewChild('modalElement', { static: true }) modalElement!: ElementRef;
   @Output() onClose = new EventEmitter<boolean>();
   private modalInstance!: Modal;
@@ -33,12 +33,12 @@ export class AccountInventoryDialogComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.akunForm = this.fb.group({
       accountType: [{ value: 'D', disabled: true }, Validators.required],
-      accountCategory: [{ value: 'Asset', disabled: true }],
-      parentAccount: [{ value: '1-2000', disabled: true }],
-      codePrefix: [{ value: '1', disabled: true }],
+      accountCategory: [{ value: 'Revenue', disabled: true }],
+      parentAccount: [{ value: '4-0000', disabled: true }],
+      codePrefix: [{ value: '4', disabled: true }],
       code: ['', Validators.required],
       name: ['', Validators.required],
-      isCashBank: [{ value: false, disabled: true }],
+      isCashBank: [{ value: true, disabled: true }],
     });
   }
   open() {
@@ -59,9 +59,9 @@ export class AccountInventoryDialogComponent implements OnInit, AfterViewInit {
   edit(id: number, codePrefix: string ,code: string, name: string, parentAccount:string) {
     this.id = id; // Set the id for the account being edited
     this.akunForm.patchValue({
+      codePrefix: codePrefix,
       code: code,
       name: name,
-      codePrefix: codePrefix,
       parentAccount: parentAccount,
     });
     this.modalInstance.show();

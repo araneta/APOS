@@ -67,7 +67,7 @@ export class ActionsCellRenderer implements ICellRendererAngularComp {  // ✅ M
       return true;
     });
     
-    console.log('✨ Visible buttons after filtering:', this.visibleButtons);
+    //console.log('✨ Visible buttons after filtering:', this.visibleButtons);
   }
 
   getButtonClass(button: ActionButton): string {

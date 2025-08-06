@@ -92,7 +92,7 @@ public class AccountService {
         AccountCategory category = AccountCategory.valueOf(form.getAccountCategory());
         account.setCategory(category);
         
-        account.setCode(form.getCode());
+        account.setCode(form.getCodePrefix()+"-"+form.getCode());
         //account.setCurrency(currency);
         account.setName(form.getName());
         account.setParent(parentCashAccount.get());
@@ -108,6 +108,7 @@ public class AccountService {
     }
     
     public Account updateAccount(long id, AccountEntryForm form){
+        
         var parentCashAccount = repository.findByCode(form.getParentAccount());
         if(!parentCashAccount.isPresent()){
             throw new ServiceException("Parent code not found", 0);
@@ -116,14 +117,17 @@ public class AccountService {
         if(!existing.isPresent()){
             throw new ServiceException("item not found", 0);
         }
-        Account account = existing.get();
         
+        Account account = existing.get();
+        if(account.getParent()==null && account.getType() == AccountType.H ){
+            throw new ServiceException("Forbidden", 0);
+        }
         account.setCashBank(form.isIsCashBank());
         
         AccountCategory category = AccountCategory.valueOf(form.getAccountCategory());
         account.setCategory(category);
         
-        account.setCode(form.getCode());
+        account.setCode(form.getCodePrefix()+"-"+form.getCode());
         //account.setCurrency(currency);
         account.setName(form.getName());
         account.setParent(parentCashAccount.get());

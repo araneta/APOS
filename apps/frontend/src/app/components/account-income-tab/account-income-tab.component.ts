@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { AccountDTO } from "../../api/model/accountDTO";
 import { ToastrService } from "ngx-toastr";
@@ -7,19 +7,23 @@ import { AccountManagementService } from "../../api/api/accountManagement.servic
 import { CommonModule } from '@angular/common';
 import { PagingResultAccountDTO } from '../../api/model/pagingResultAccountDTO';
 import { FlatTreeRow, TreeGridComponent, ActionButton } from '../tree-grid';
+import { AccountIncomeDialogComponent } from '../account-income-dialog/account-income-dialog.component';
+import { LoadingService } from '../../loading.service';
 
 
 @Component({
   selector: 'app-account-income-tab',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TreeGridComponent],
+  imports: [CommonModule, ReactiveFormsModule, TreeGridComponent, AccountIncomeDialogComponent],
   templateUrl: './account-income-tab.component.html',
   //styleUrls: ['./account-Income-tab.component.scss']
 })
 export class AccountIncomeTabComponent implements OnInit {
+  @ViewChild('modalRef') modalComponent!: AccountIncomeDialogComponent;
+  @ViewChild('treeGrid') gridComponent!: TreeGridComponent;
   incomeAccounts: AccountDTO[] = [];
   selectedAccount?: AccountDTO;
-
+  
   isEditMode = false;
   loading = false;
   errorMessage = '';
@@ -59,7 +63,8 @@ export class AccountIncomeTabComponent implements OnInit {
   constructor(
     private accountManagementService: AccountManagementService,
     private fb: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private loadingService: LoadingService,
   ) {
 
   }
@@ -127,7 +132,42 @@ export class AccountIncomeTabComponent implements OnInit {
     });
   }
 
-  onAction(event: any) {
-    alert(`Action: ${event.action}, Data: ${JSON.stringify(event.data)}`);
+  onAction(params: any) {
+    console.log('Action triggered:', params);
+    if(params.action === 'edit') {
+      var codes = params.data.label.split('-');
+      //find this.incomeAccounts with id = params.data.parentId 
+      const parentAccount = this.incomeAccounts.find(account => account.id === params.data.parentId);
+      if (parentAccount) {
+        const parentCode = parentAccount?.code ?? '';
+
+        this.modalComponent.edit(params.data.id, codes[0], codes[1], params.data.name, parentCode);
+      }
+    }
+    //alert(`Action: ${event.action}, Data: ${JSON.stringify(event.data)}`);
   }
+
+
+  showModal() {
+    this.modalComponent.open();
+  }
+
+  handleModalClose(updated: boolean) {
+    if (updated) {
+      this.loadingService.show();
+      // Reload data if the modal was closed with an update
+      this.loadDataIncomeAccounts({
+        currentPage: this.currentPage,
+        pageSize: this.sizePerPage,
+        sortCol: this.sortName,
+        sortDir: this.sortOrder,
+        searchText: '',
+      });
+
+      // after operation is done
+      this.loadingService.hideAfter();
+
+    }
+  }
+
 }

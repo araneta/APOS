@@ -62,7 +62,8 @@ export class AccountInventoryTabComponent implements OnInit {
         editButton.classList.add('btn', 'btn-sm', 'btn-primary', 'me-2');
         editButton.addEventListener('click', () => {
           console.log('edit', params.data);
-          this.modalComponent.edit(params.data.id, params.data.code, params.data.name);
+          var codes = params.data.label.split('-');
+          this.modalComponent.edit(params.data.id, codes[0], codes[1], params.data.name, params.data.parent.code  );
         });
 
         // Delete button

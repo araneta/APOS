@@ -1,5 +1,11 @@
- <div style="height: 400px;">
+<button class="btn btn-success" (click)="showModal()">Add</button>
+
+<!-- Include Modal Component -->
+<account-income-dialog (onClose)="handleModalClose($event)" #modalRef></account-income-dialog>
+
+<div style="height: 400px;">
     <tree-grid
+      #treeGrid
         [data]="treeRows"
         [columns]="treeColumns"
         [showActions]="showActionsColumn"
