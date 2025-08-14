@@ -149,5 +149,7 @@ public class AccountService {
         repository.delete(existing.get());
         return true;
     }
-            
+    public List<Account> findAllParentsByAccountCategory(AccountCategory cat){
+        return repository.findAllParentsByAccountCategory(cat);
+    }
 }

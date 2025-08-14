@@ -11,6 +11,7 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
+import { Account } from '../model/models';
 import { AccountDTO } from '../model/models';
 import { AccountEntryForm } from '../model/models';
 import { PagingResultAccountDTO } from '../model/models';
@@ -37,6 +38,13 @@ export interface AccountManagementServiceInterface {
      * @param id 
      */
     deleteAccount(id: number, extraHttpRequestParams?: any): Observable<object>;
+
+    /**
+     * 
+     * 
+     * @param categoryID 
+     */
+    findAllParentsByAccountCategory(categoryID: string, extraHttpRequestParams?: any): Observable<Array<Account>>;
 
     /**
      * Get all accounts

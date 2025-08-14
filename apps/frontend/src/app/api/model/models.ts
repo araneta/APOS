@@ -1,3 +1,4 @@
+export * from './account';
 export * from './accountDTO';
 export * from './accountEntryForm';
 export * from './loginRequest';

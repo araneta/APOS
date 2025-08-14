@@ -9,22 +9,21 @@
  */
 
 
-export interface AccountDTO { 
+export interface Account { 
     id?: number;
     code?: string;
     name?: string;
     level?: number;
-    type?: AccountDTO.TypeEnum;
-    category?: AccountDTO.CategoryEnum;
-    cashBank?: boolean;
-    fxDefault?: boolean;
+    type?: Account.TypeEnum;
+    category?: Account.CategoryEnum;
     currency?: string;
-    active?: boolean;
     createdAt?: string;
     updatedAt?: string;
-    parent?: AccountDTO;
+    cashBank?: boolean;
+    fxDefault?: boolean;
+    active?: boolean;
 }
-export namespace AccountDTO {
+export namespace Account {
     export const TypeEnum = {
         H: 'H',
         D: 'D'

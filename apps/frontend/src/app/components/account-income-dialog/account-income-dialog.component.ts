@@ -5,6 +5,7 @@ import { AccountManagementService } from '../../api/api/accountManagement.servic
 import { AccountEntryForm } from '../../api/model/accountEntryForm';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule, NgIf, NgClass } from '@angular/common';
+import {AccountParentDropdownComponent, ParentAccountItem} from '../accoount-parent-dropdown/accoount-parent-dropdown.component';
 
 @Component({
   selector: 'account-income-dialog',
@@ -12,7 +13,8 @@ import { CommonModule, NgIf, NgClass } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, NgIf,
     NgClass,
-    CommonModule,],
+    CommonModule,
+    AccountParentDropdownComponent],
 })
 export class AccountIncomeDialogComponent implements OnInit, AfterViewInit {
   @ViewChild('modalElement', { static: true }) modalElement!: ElementRef;
@@ -22,6 +24,8 @@ export class AccountIncomeDialogComponent implements OnInit, AfterViewInit {
 
   akunForm!: FormGroup;
   id: number | null = null;
+  defaultItem: ParentAccountItem|null = null;
+  categoryID: string = 'Income'; // Assuming this is the category for income accounts
 
   ngAfterViewInit() {
     this.modalInstance = new Modal(this.modalElement.nativeElement);
@@ -33,7 +37,7 @@ export class AccountIncomeDialogComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.akunForm = this.fb.group({
       accountType: [{ value: 'D', disabled: true }, Validators.required],
-      accountCategory: [{ value: 'Revenue', disabled: true }],
+      accountCategory: [{ value: 'Income', disabled: true }],
       parentAccount: [{ value: '4-0000', disabled: true }],
       codePrefix: [{ value: '4', disabled: true }],
       code: ['', Validators.required],
@@ -104,5 +108,13 @@ export class AccountIncomeDialogComponent implements OnInit, AfterViewInit {
 
 
     }
+  }
+
+  onItemSelected(item: ParentAccountItem){
+    console.log('selected',item);
+    this.akunForm.patchValue({      
+      parentAccount: item.code,
+      
+    });
   }
 }

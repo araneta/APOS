@@ -42,13 +42,15 @@ public class DataSeeder implements CommandLineRunner {
                 return AccountCategory.Equity;
 
             case "4":
+                return AccountCategory.Income;
             case "7":
-                return AccountCategory.Revenue;
-
+                return AccountCategory.Other_Income;                
             case "5":
+                return AccountCategory.Cost_of_Sales;                
             case "6":
+                return AccountCategory.Expense;                
             case "8":
-                return AccountCategory.Expense;
+                return AccountCategory.Other_Expense;
 
             default:
                 return null;

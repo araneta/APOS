@@ -10,6 +10,7 @@ import com.example.pos.dto.BaseResponse;
 import com.example.pos.dto.Paging;
 import com.example.pos.dto.PagingResult;
 import com.example.pos.entities.Account;
+import com.example.pos.entities.AccountCategory;
 import com.example.pos.services.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -369,5 +370,10 @@ public class AccountController {
         //response.setTime(TimeHelper.getCurrentTimeYYYYMMDDHHmmss());
         response.setData(data);
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
+    }
+    
+    @GetMapping("/parents/category/{categoryID}")    
+    public List<Account> findAllParentsByAccountCategory(@PathVariable String categoryID){
+        return accountService.findAllParentsByAccountCategory(AccountCategory.valueOf(categoryID));
     }
 }

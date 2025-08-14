@@ -1,0 +1,23 @@
+<div class="dropdown">
+    <button class="btn btn-outline-primary dropdown-toggle" type="button"
+    (click)="toggleDropdown()" aria-expanded=""isOpen>
+{{selectedItemLabel}}
+    </button>
+    <div class="dropdown-menu p-2" [class.show]="isOpen" style="min-width: 300px;">
+        <table class="table table-sm table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of items" (click)="selectItem(item)" style="cursor: pointer;">
+                    <td>{{item.code}}</td>
+                    <td>{{item.name}}</td>
+                </tr>
+            </tbody>
+        </table>        
+
+    </div>
+</div>
